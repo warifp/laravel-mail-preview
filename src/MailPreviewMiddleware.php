@@ -63,7 +63,7 @@ class MailPreviewMiddleware
 
             $linkHTML .= "setTimeout(function(){
             document.body.removeChild(document.getElementById('MailPreviewDriverBox'));
-            }, ". intval(config('mailpreview.popup_timeout', 8000)).");";
+            }, " . $timeout . ");";
 
             $linkHTML .= "</script>";
         }
