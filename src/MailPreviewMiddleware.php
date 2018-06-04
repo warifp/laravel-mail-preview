@@ -56,13 +56,18 @@ class MailPreviewMiddleware
         An email was just sent: <a href='".url('/themsaid/mail-preview?path='.$previewPath)."'>Preview Sent Email</a>
         </div>";
 
-        $linkHTML .= "<script type=\"text/javascript\">";
+        $timeout = intval(config('mailpreview.popup_timeout', 8000));
 
-        $linkHTML .= "setTimeout(function(){ 
-        document.body.removeChild(document.getElementById('MailPreviewDriverBox')); 
-        }, 8000);";
+        if ($timeout > 0) {
+            $linkHTML .= "<script type=\"text/javascript\">";
 
-        $linkHTML .= "</script>";
+            $linkHTML .= "setTimeout(function(){
+            document.body.removeChild(document.getElementById('MailPreviewDriverBox'));
+            }, " . $timeout . ");";
+
+            $linkHTML .= "</script>";
+        }
+
 
         $bodyPosition = strripos($content, '</body>');
 
