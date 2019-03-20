@@ -16,16 +16,24 @@ class MailPreviewMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $response = $next($request);
+        $addLinktoResponse = false;
 
         if (
             $request->hasSession() &&
-            $response instanceOf Response &&
             $previewPath = $request->session()->get('mail_preview_path')
         ) {
-            $this->addLinkToResponse($response, $previewPath);
+            $addLinktoResponse = true;
 
             $request->session()->forget('mail_preview_path');
+        }
+
+        $response = $next($request);
+
+        if (
+            $response instanceOf Response &&
+            $addLinktoResponse
+        ) {
+            $this->addLinkToResponse($response, $previewPath);
         }
 
         return $response;
