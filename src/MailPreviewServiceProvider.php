@@ -2,7 +2,6 @@
 
 namespace Themsaid\MailPreview;
 
-use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 
 class MailPreviewServiceProvider extends ServiceProvider
@@ -23,14 +22,18 @@ class MailPreviewServiceProvider extends ServiceProvider
         }
 
         if ($this->app['config']['mailpreview.show_link_to_preview']) {
-
             $this->app['router']->group(['middleware' => $this->middleware()], function ($router) {
                 $router->get('/themsaid/mail-preview')->uses(MailPreviewController::class.'@preview');
             });
 
-            $this->app[Kernel::class]->pushMiddleware(
-                MailPreviewMiddleware::class
-            );
+            if ($this->app['config']['mailpreview.middleware_groups']) {
+                foreach ($this->app['config']['mailpreview.middleware_groups'] as $groupName) {
+                    $this->app['router']->pushMiddlewareToGroup(
+                        $groupName,
+                        MailPreviewMiddleware::class
+                    );
+                }
+            }
         }
     }
 
