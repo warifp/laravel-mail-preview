@@ -61,7 +61,7 @@ class MailPreviewMiddleware
             border:solid 1px #ccc;
             padding: 15px;
             '>
-        An email was just sent: <a href='" . url('/themsaid/mail-preview?path=' . $previewPath) . "'>Preview Sent Email</a>
+        An email was just sent: <a href='".url('/themsaid/mail-preview?path='.$previewPath)."'>Preview Sent Email</a>
         </div>";
 
         $timeout = intval(config('mailpreview.popup_timeout', 8000));
@@ -80,7 +80,7 @@ class MailPreviewMiddleware
         $bodyPosition = strripos($content, '</body>');
 
         if (false !== $bodyPosition) {
-            $content = substr($content, 0, $bodyPosition) . $linkHTML . substr($content, $bodyPosition);
+            $content = substr($content, 0, $bodyPosition).$linkHTML.substr($content, $bodyPosition);
         }
 
         $response->setContent($content);
