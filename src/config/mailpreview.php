@@ -50,6 +50,17 @@ return [
 
     /**
      * --------------------------------------------------------------------------
+     * Middleware group(s)
+     * --------------------------------------------------------------------------
+     *
+     * Most likely you don't have to touch this value, in this array all
+     * middleware groups that you want to use this package with should
+     * be included.
+     */
+    'middleware_groups' => ['web'],
+
+    /**
+     * --------------------------------------------------------------------------
      * Set middleware for the mail preview route
      * --------------------------------------------------------------------------
      *
