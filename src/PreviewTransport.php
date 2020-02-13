@@ -84,7 +84,10 @@ class PreviewTransport extends Transport
 
         $subject = $message->getSubject();
 
-        return $this->previewPath.'/'.Str::slug($message->getDate()->getTimestamp().'_'.$to.'_'.$subject, '_');
+        $date = $message->getDate();
+        $milliseconds = $date->format('u');
+
+        return $this->previewPath.'/'.Str::slug($date->getTimestamp().'_'.$milliseconds.'_'.$to.'_'.$subject, '_');
     }
 
     /**
