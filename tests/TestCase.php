@@ -12,7 +12,7 @@ abstract class TestCase extends Orchestra
     {
         parent::setUp();
 
-        config()->set('mailers.smtp.transport', 'preview');
+        config()->set('mail.mailers.smtp.transport', 'preview');
 
         $this->clearSentMails();
     }
