@@ -21,10 +21,16 @@ Then publish the config file:
 php artisan vendor:publish --provider="Themsaid\MailPreview\MailPreviewServiceProvider"
 ```
 
-Finally, change `MAIL_DRIVER` to `preview` in your `.env` file:
+Finally, change the `mailers.smtp.transport` to `preview` in your `config/mail.php` file:
 
 ```
-MAIL_DRIVER=preview
+'mailers' => [
+    'smtp' => [
+        'transport' => 'preview',
+        // ...
+    ],
+    // ...
+]
 ```
 
 ## How it works

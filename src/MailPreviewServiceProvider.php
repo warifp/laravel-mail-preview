@@ -17,9 +17,13 @@ class MailPreviewServiceProvider extends ServiceProvider
             __DIR__.'/config/mailpreview.php' => config_path('mailpreview.php'),
         ]);
 
-        if ($this->app['config']['mail.driver'] != 'preview') {
-            return;
-        }
+        $this->app['mail.manager']->extend('preview', function(){
+            return new PreviewTransport(
+                $this->app->make('Illuminate\Filesystem\Filesystem'),
+                $this->app['config']['mailpreview.path'],
+                $this->app['config']['mailpreview.maximum_lifetime']
+            );
+        });
 
         if ($this->app['config']['mailpreview.show_link_to_preview']) {
             $this->app['router']->group(['middleware' => $this->middleware()], function ($router) {
@@ -47,8 +51,6 @@ class MailPreviewServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/config/mailpreview.php', 'mailpreview'
         );
-
-        $this->app->register(MailProvider::class);
     }
 
     /**
