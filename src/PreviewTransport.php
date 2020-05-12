@@ -34,9 +34,9 @@ class PreviewTransport extends Transport
     /**
      * Create a new preview transport instance.
      *
-     * @param  \Illuminate\Filesystem\Filesystem $files
-     * @param  string $previewPath
-     * @param  int $lifeTime
+     * @param \Illuminate\Filesystem\Filesystem $files
+     * @param string $previewPath
+     * @param int $lifeTime
      *
      * @return void
      */
@@ -74,26 +74,31 @@ class PreviewTransport extends Transport
     /**
      * Get the path to the email preview file.
      *
-     * @param  \Swift_Mime_SimpleMessage $message
+     * @param \Swift_Mime_SimpleMessage $message
      *
      * @return string
      */
     protected function getPreviewFilePath(Swift_Mime_SimpleMessage $message)
     {
-        $to = str_replace(['@', '.'], ['_at_', '_'], array_keys($message->getTo())[0]);
+        $recipients = array_keys($message->getTo());
+
+        $to = ! empty($recipients)
+            ? str_replace(['@', '.'], ['_at_', '_'], $recipients[0]).'_'
+            : '';
 
         $subject = $message->getSubject();
 
-        $date = $message->getDate();
-        $milliseconds = $date->format('u');
-
-        return $this->previewPath.'/'.Str::slug($date->getTimestamp().'_'.$milliseconds.'_'.$to.'_'.$subject, '_');
+        return $this->previewPath.
+            '/'.
+            Str::slug(
+                $message->getDate()->format('u').'_'.$to.$subject, '_'
+            );
     }
 
     /**
      * Get the HTML content for the preview file.
      *
-     * @param  \Swift_Mime_SimpleMessage $message
+     * @param \Swift_Mime_SimpleMessage $message
      *
      * @return string
      */
@@ -107,7 +112,7 @@ class PreviewTransport extends Transport
     /**
      * Get the EML content for the preview file.
      *
-     * @param  \Swift_Mime_SimpleMessage $message
+     * @param \Swift_Mime_SimpleMessage $message
      *
      * @return string
      */
