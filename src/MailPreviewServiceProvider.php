@@ -17,7 +17,7 @@ class MailPreviewServiceProvider extends ServiceProvider
             __DIR__.'/config/mailpreview.php' => config_path('mailpreview.php'),
         ]);
 
-        $this->app['mail.manager']->extend('preview', function(){
+        $this->app['mail.manager']->extend('preview', function () {
             return new PreviewTransport(
                 $this->app->make('Illuminate\Filesystem\Filesystem'),
                 $this->app['config']['mailpreview.path'],

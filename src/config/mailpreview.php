@@ -20,7 +20,7 @@ return [
      * --------------------------------------------------------------------------
      *
      * This option determines how long (in seconds) the mail transformer should
-     * keep the generated preview files before deleting them. By default it
+     * keep the generated preview files before deleting them. By default it's
      * set to 60 seconds, but you can change this to whatever you desire.
      *
      */
@@ -43,9 +43,10 @@ return [
     /**
      * The timeout for the popup
      *
-     * This is a time in miliseconds
-     * if you use 0 or a negative number it will never be removed.
+     * This is a time in milliseconds.
+     * If you use 0 or a negative number it will never be removed.
      */
+
     'popup_timeout' => 8000,
 
     /**
@@ -57,6 +58,7 @@ return [
      * middleware groups that you want to use this package with should
      * be included.
      */
+
     'middleware_groups' => ['web'],
 
     /**
@@ -64,7 +66,7 @@ return [
      * Set middleware for the mail preview route
      * --------------------------------------------------------------------------
      *
-     * This option allows for setting middlewares for the route that shows a
+     * This option allows for setting middleware for the route that shows a
      * preview to the mail that was just sent.
      */
 

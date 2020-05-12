@@ -2,22 +2,17 @@
 
 namespace Themsaid\MailPreview;
 
-use Illuminate\Routing\Controller as BaseController;
-
-class MailPreviewController extends BaseController
+class MailPreviewController
 {
     /**
      * @return string
      */
     public function preview()
     {
-        if ($previewPath = request()->input('path')) {
-            $content = file_get_contents(config('mailpreview.path').'/'.$previewPath.'.html');
-        } else {
-            $lastPreviewName = last(glob(config('mailpreview.path').'/*.html'));
-            $content = file_get_contents($lastPreviewName);
-        }
-
-        return $content;
+        return file_get_contents(
+            request('path')
+                ? config('mailpreview.path').'/'.request('path').'.html'
+                : last(glob(config('mailpreview.path').'/*.html'))
+        );
     }
 }
