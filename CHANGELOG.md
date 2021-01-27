@@ -2,6 +2,6 @@
 
 All notable changes to `:package_name` will be documented in this file.
 
-## 1.0.0 - 202X-XX-XX
+## 4.0.1 - 2021-01-27
 
-- initial release
+- first release after transfer from themsaid/laravel-mail-preview
