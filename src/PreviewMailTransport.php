@@ -56,7 +56,7 @@ class PreviewMailTransport extends Transport
     {
         $recipients = array_keys($message->getTo());
 
-        $to = !empty($recipients)
+        $to = ! empty($recipients)
             ? str_replace(['@', '.'], ['_at_', '_'], $recipients[0]) . '_'
             : '';
 
@@ -81,7 +81,6 @@ class PreviewMailTransport extends Transport
     protected function ensureEmailPreviewDirectoryExists(): self
     {
         if ($this->files->exists($this->previewPath)) {
-
             return $this;
         }
 
@@ -100,7 +99,7 @@ class PreviewMailTransport extends Transport
 
                 return $fileAgeInSeconds >= $this->maximumLifeTimeInSeconds;
             })
-            ->each(fn(SplFileInfo $file) => $this->files->delete(ray()->pass($file->getPathname())));
+            ->each(fn (SplFileInfo $file) => $this->files->delete(ray()->pass($file->getPathname())));
 
         return $this;
     }
