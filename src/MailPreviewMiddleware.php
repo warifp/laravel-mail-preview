@@ -50,7 +50,7 @@ class MailPreviewMiddleware
     {
         $content = $response->getContent();
 
-        $previewUrl = route('mail.preview', ['path' => $previewPath]);
+        $previewUrl = route('mail.preview', ['storage_path' => $previewPath]);
 
         $timeout = config('mail-preview.popup_timeout_in_seconds');
 

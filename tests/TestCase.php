@@ -29,9 +29,9 @@ abstract class TestCase extends Orchestra
 
     protected function assertLatestStoredMailContains(string $substring): void
     {
-        $this->assertDirectoryExists(config('mail-preview.path'));
+        $this->assertDirectoryExists(config('mail-preview.storage_path'));
 
-        $latestMailPath = collect(File::allFiles(config('mail-preview.path')))
+        $latestMailPath = collect(File::allFiles(config('mail-preview.storage_path')))
             ->sortByDesc(fn (SplFileInfo $file) => $file->getMTime())
             ->first()
             ->getPathName();

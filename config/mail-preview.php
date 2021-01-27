@@ -2,20 +2,14 @@
 
 return [
     /*
-     * This option determines where all the generated email previews will be
-     * stored for the application. Typically, this is within the storage
-     * directory. However, you may change the location as you desire.
-     *
+     * All mails will be stored here
      */
-    'path' => storage_path('email-previews'),
+    'storage_path' => storage_path('email-previews'),
 
     /*
-     * This option determines how long (in seconds) the mail transformer should
-     * keep the generated preview files before deleting them. By default it's
-     * set to 60 seconds, but you can change this to whatever you desire.
-     *
+     * This option determines how long generated preview files will be kept.
      */
-    'maximum_lifetime' => 60,
+    'maximum_lifetime_in_seconds' => 60,
 
     /*
      * This option determines if you would like to show a HTML link at the top
