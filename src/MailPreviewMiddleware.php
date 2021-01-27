@@ -1,6 +1,6 @@
 <?php
 
-namespace Themsaid\MailPreview;
+namespace Spatie\MailPreview;
 
 use Closure;
 use Illuminate\Http\Response;

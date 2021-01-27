@@ -1,6 +1,6 @@
 <?php
 
-namespace Themsaid\MailPreview\Tests;
+namespace Spatie\MailPreview\Tests;
 
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;

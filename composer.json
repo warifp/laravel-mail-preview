@@ -1,5 +1,5 @@
 {
-    "name": "themsaid/laravel-mail-preview",
+    "name": "spatie/laravel-mail-preview",
     "description": "Adds a 'preview' mail driver for testing emails in laravel.",
     "keywords": ["laravel", "mail"],
     "homepage": "https://github.com/themsaid/laravel-preview-mail-driver",
@@ -8,31 +8,35 @@
         {
             "name": "Mohamed Said",
             "email": "themsaid@gmail.com"
+        },
+        {
+            "name": "Freek Van der Herten",
+            "email": "freek@spatie.be"
         }
     ],
     "require": {
-        "php": "^7.3",
-        "illuminate/support": "^7.0 || ^8.0",
-        "illuminate/mail": "^7.0 || ^8.0",
-        "illuminate/filesystem": "^7. || ^8.0"
+        "php": "^7.3|^8.0",
+        "illuminate/support": "^7.0|^8.0",
+        "illuminate/mail": "^7.0|^8.0",
+        "illuminate/filesystem": "^7.0|^8.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^5.0 || ^6.0"
+        "orchestra/testbench": "^5.0|^6.0"
     },
     "autoload": {
         "psr-4": {
-            "Themsaid\\MailPreview\\": "src"
+            "Spatie\\MailPreview\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Themsaid\\MailPreview\\Tests\\": "tests"
+            "Spatie\\MailPreview\\Tests\\": "tests"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Themsaid\\MailPreview\\MailPreviewServiceProvider"
+                "Spatie\\MailPreview\\MailPreviewServiceProvider"
             ]
         }
     },

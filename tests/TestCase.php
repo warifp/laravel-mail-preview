@@ -1,10 +1,10 @@
 <?php
 
-namespace Themsaid\MailPreview\Tests;
+namespace Spatie\MailPreview\Tests;
 
 use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Themsaid\MailPreview\MailPreviewServiceProvider;
+use Spatie\MailPreview\MailPreviewServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
