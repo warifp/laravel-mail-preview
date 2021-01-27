@@ -14,7 +14,7 @@ class MailPreviewServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/config/mailpreview.php' => config_path('mailpreview.php'),
+            __DIR__.'/../config/mail-preview.php' => config_path('mailpreview.php'),
         ]);
 
         $this->app['mail.manager']->extend('preview', function () {
@@ -49,7 +49,7 @@ class MailPreviewServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/config/mailpreview.php',
+            __DIR__.'/../config/mail-preview.php',
             'mailpreview'
         );
     }
