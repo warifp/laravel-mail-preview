@@ -26,12 +26,11 @@ return [
     'show_link_to_preview' => true,
 
     /*
-     * The timeout for the popup
+     * Determines how long the preview pop up should remain visible.
      *
-     * This is a time in milliseconds.
-     * If you use 0 or a negative number it will never be removed.
+     * You can set this to `false` if the popup should stay visible.
      */
-    'popup_timeout' => 8000,
+    'popup_timeout_in_seconds' => 8,
 
     /*
      * Most likely you don't have to touch this value, in this array all

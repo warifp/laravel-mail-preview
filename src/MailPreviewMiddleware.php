@@ -52,7 +52,7 @@ class MailPreviewMiddleware
 
         $previewUrl = route('mail.preview', ['path' => $previewPath]);
 
-        $timeout = config('mail-preview.popup_timeout');
+        $timeout = config('mail-preview.popup_timeout_in_seconds');
 
         $linkContent = <<<HTML
 <div id="MailPreviewDriverBox" style="
@@ -68,7 +68,7 @@ An email was just sent: <a href="$previewUrl">Preview Sent Email</a>
 <script type="text/javascript">
 setTimeout(function(){
     document.body.removeChild(document.getElementById('MailPreviewDriverBox'));
-}, $timeout);
+}, $timeout * 1000);
 </script>
 HTML;
 
