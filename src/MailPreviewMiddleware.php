@@ -7,13 +7,6 @@ use Illuminate\Http\Response;
 
 class MailPreviewMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
-     * @return mixed
-     */
     public function handle($request, Closure $next)
     {
         $response = $next($request);
@@ -30,12 +23,7 @@ class MailPreviewMiddleware
         return $response;
     }
 
-    /**
-     * @param $request
-     * @param $response
-     * @return bool
-     */
-    private function shouldAttachPreviewLinkToResponse($request, $response)
+    protected function shouldAttachPreviewLinkToResponse($request, $response)
     {
         return
             ! app()->runningInConsole() &&
@@ -44,17 +32,13 @@ class MailPreviewMiddleware
             $request->session()->get('mail_preview_path');
     }
 
-    /**
-     * @param $response
-     * @param $previewPath
-     */
-    private function attachPreviewLink($response, $previewPath)
+    protected function attachPreviewLink($response, $previewPath)
     {
         $content = $response->getContent();
 
         $previewUrl = url('/themsaid/mail-preview?path='.$previewPath);
 
-        $timeout = intval(config('mailpreview.popup_timeout', 8000));
+        $timeout = intval(config('mail-preview.popup_timeout', 8000));
 
         $linkContent = <<<HTML
 <div id="MailPreviewDriverBox" style="

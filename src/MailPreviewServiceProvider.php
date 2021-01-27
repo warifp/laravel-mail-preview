@@ -2,36 +2,36 @@
 
 namespace Spatie\MailPreview;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Session\Middleware\StartSession;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class MailPreviewServiceProvider extends ServiceProvider
+class MailPreviewServiceProvider extends PackageServiceProvider
 {
-    /**
-     * Perform post-registration booting of services.
-     *
-     * @return void
-     */
+    public function configurePackage(Package $package): void
+    {
+        $package
+            ->name('laravel-mail-preview')
+            ->hasConfigFile();
+    }
+
     public function boot()
     {
-        $this->publishes([
-            __DIR__.'/../config/mail-preview.php' => config_path('mailpreview.php'),
-        ]);
-
         $this->app['mail.manager']->extend('preview', function () {
             return new PreviewTransport(
                 $this->app->make('Illuminate\Filesystem\Filesystem'),
-                $this->app['config']['mailpreview.path'],
-                $this->app['config']['mailpreview.maximum_lifetime']
+                $this->app['config']['mail-preview.path'],
+                $this->app['config']['mail-preview.maximum_lifetime']
             );
         });
 
-        if ($this->app['config']['mailpreview.show_link_to_preview']) {
+        if ($this->app['config']['mail-preview.show_link_to_preview']) {
             $this->app['router']->group(['middleware' => $this->middleware()], function ($router) {
                 $router->get('/themsaid/mail-preview')->uses(MailPreviewController::class.'@preview');
             });
 
-            if ($this->app['config']['mailpreview.middleware_groups']) {
-                foreach ($this->app['config']['mailpreview.middleware_groups'] as $groupName) {
+            if ($this->app['config']['mail-preview.middleware_groups']) {
+                foreach ($this->app['config']['mail-preview.middleware_groups'] as $groupName) {
                     $this->app['router']->pushMiddlewareToGroup(
                         $groupName,
                         MailPreviewMiddleware::class
@@ -41,29 +41,11 @@ class MailPreviewServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * Register any package services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/mail-preview.php',
-            'mailpreview'
-        );
-    }
-
-    /**
-     * The array of middleware for the preview route.
-     *
-     * @return array
-     */
-    private function middleware()
+    protected function middleware(): array
     {
         return array_merge(
-            (array) $this->app['config']['mailpreview.middleware'],
-            [\Illuminate\Session\Middleware\StartSession::class]
+            (array) $this->app['config']['mail-preview.middleware'],
+            [StartSession::class]
         );
     }
 }

@@ -29,7 +29,7 @@ class PreviewTransport extends Transport
      *
      * @var int
      */
-    private $lifeTime;
+    protected $lifeTime;
 
     /**
      * Create a new preview transport instance.
@@ -161,7 +161,7 @@ class PreviewTransport extends Transport
      *
      * @return void
      */
-    private function cleanOldPreviews()
+    protected function cleanOldPreviews()
     {
         $oldPreviews = array_filter($this->files->files($this->previewPath), function ($file) {
             return time() - $this->files->lastModified($file) > $this->lifeTime;
