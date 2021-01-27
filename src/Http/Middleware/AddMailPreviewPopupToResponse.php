@@ -52,25 +52,11 @@ class AddMailPreviewPopupToResponse
 
         $previewUrl = route('mail.preview', ['storage_path' => $previewPath]);
 
-        $timeout = config('mail-preview.popup_timeout_in_seconds');
+        $timeoutInSeconds = config('mail-preview.popup_timeout_in_seconds');
 
-        $linkContent = <<<HTML
-<div id="MailPreviewDriverBox" style="
-    position:absolute;
-    top:0;
-    z-index:99999;
-    background:#fff;
-    border:solid 1px #ccc;
-    padding: 15px;
-    ">
-An email was just sent: <a href="$previewUrl">Preview Sent Email</a>
-</div>
-<script type="text/javascript">
-setTimeout(function(){
-    document.body.removeChild(document.getElementById('MailPreviewDriverBox'));
-}, $timeout * 1000);
-</script>
-HTML;
+        $linkContent = view('mail-preview::previewLinkPopup', )
+            ->with(compact('previewUrl', 'timeoutInSeconds'))
+            ->render();
 
         $bodyPosition = strripos($content, '</body>');
 

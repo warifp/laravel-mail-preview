@@ -15,14 +15,16 @@ class MailPreviewServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('laravel-mail-preview')
-            ->hasConfigFile();
+            ->hasConfigFile()
+            ->hasViews();
     }
 
     public function packageBooted()
     {
         $this
             ->registerPreviewMailTransport()
-            ->registerPreviewRoute();
+            ->registerRouteMacro()
+            ->registerPreviewMiddleware();
     }
 
     protected function registerPreviewMailTransport(): self
@@ -38,13 +40,11 @@ class MailPreviewServiceProvider extends PackageServiceProvider
         return $this;
     }
 
-    protected function registerPreviewRoute(): self
+    protected function registerPreviewMiddleware(): self
     {
         if (! config('mail-preview.show_link_to_preview')) {
             return $this;
         }
-
-        Route::get('spatie/mail-preview')->middleware($this->middleware())->name('mail.preview');
 
         foreach (config('mail-preview.middleware_groups') as $groupName) {
             app('router')->pushMiddlewareToGroup(
@@ -56,11 +56,12 @@ class MailPreviewServiceProvider extends PackageServiceProvider
         return $this;
     }
 
-    protected function middleware(): array
+    protected function registerRouteMacro(): self
     {
-        return array_merge(
-            config('mail-preview.middleware'),
-            [StartSession::class]
-        );
+        Route::macro('mailPreview', function(string $prefix = 'spatie-mail-preview') {
+            Route::get($prefix)->middleware(StartSession::class)->name('mail.preview');
+        });
+
+        return $this;
     }
 }

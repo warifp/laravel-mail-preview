@@ -24,25 +24,9 @@ You can install the package via composer:
 composer require spatie/laravel-mail-preview
 ```
 
-Optionally, you can publish the config file with:
+### Configuring the mail transport
 
-```bash
-php artisan vendor:publish --provider="Spatie\Skeleton\SkeletonServiceProvider" --tag="laravel-mail-preview-config"
-```
-
-This is the content of the config file that will be published at `config/mail-preview.php`:
-
-```php
-
-```
-
-Then publish the config file:
-
-```
-php artisan vendor:publish --provider="Spatie\MailPreview\MailPreviewServiceProvider"
-```
-
-Finally, change the `mailers.smtp.transport` to `preview` in your `config/mail.php` file:
+This package contains a mail transport called `preview`. We recommend to only use this transport in non-production environments. To use the `preview` transport, change the `mailers.smtp.transport` to `preview` in your `config/mail.php` file:
 
 ```
 'mailers' => [
@@ -53,6 +37,67 @@ Finally, change the `mailers.smtp.transport` to `preview` in your `config/mail.p
     // ...
 ]
 ```
+
+### Registering the preview route
+
+The package can display a links to sent mails whenever they are sent. To use this feature, you must add this route to your routes file. Typically, the routes file will be located at `routes/web.php`.
+
+```php
+Route::mailPreview();
+```
+
+This will register a route to display sent mails at `/spatie-mail-preview`. To customize the URL, pass the URL you want to the macro.
+
+```php
+Route::mailPreview('custom-url-where-sent-mails-will-be-shown');
+```
+
+### Publishing the config file
+
+Optionally, you can publish the config file with:
+
+```bash
+php artisan vendor:publish --provider="Spatie\MailPreview\MailPreviewServiceProvider" --tag="laravel-mail-preview-config"
+```
+
+This is the content of the config file that will be published at `config/mail-preview.php`:
+
+```php
+return [
+    /*
+     * All mails will be stored in the given directory.
+     */
+    'storage_path' => storage_path('email-previews'),
+
+    /*
+     * This option determines how long generated preview files will be kept.
+     */
+    'maximum_lifetime_in_seconds' => 60,
+
+    /*
+     * When enabled, a link to mail will be added to the response
+     * every time a mail is sent.
+     */
+    'show_link_to_preview' => true,
+
+    /*
+     * Determines how long the preview pop up should remain visible.
+     *
+     * Set this to `false` if the popup should stay visible.
+     */
+    'popup_timeout_in_seconds' => 8,
+];
+```
+
+### Publishing the views
+
+Optionally, you can publish the view that renders the preview dialog.
+
+```bash
+php artisan vendor:publish --provider="Spatie\MailPreview\MailPreviewServiceProvider" --tag="laravel-mail-preview-views"
+```
+
+You can modify the file that will be published at `resources/views/vendor/mail-preview/previewLinkPopup.blade.php` to your liking.
 
 ## Usage
 

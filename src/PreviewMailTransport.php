@@ -36,11 +36,11 @@ class PreviewMailTransport extends Transport
 
         session()->put('mail_preview_path', basename($previewPath = $this->getPreviewFilePath($message)));
 
-        $this->files->put("{$previewPath}.html", $this->getHTMLPreviewContent($message));
+        $this->files->put("{$previewPath}.html", $this->getHtmlPreviewContent($message));
         $this->files->put("{$previewPath}.eml", $this->getEmlPreviewContent($message));
     }
 
-    protected function getHTMLPreviewContent(Swift_Mime_SimpleMessage $message): string
+    protected function getHtmlPreviewContent(Swift_Mime_SimpleMessage $message): string
     {
         $messageInfo = $this->getMessageInfo($message);
 
