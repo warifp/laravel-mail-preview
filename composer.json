@@ -1,6 +1,6 @@
 {
     "name": "spatie/laravel-mail-preview",
-    "description": "Adds a 'preview' mail driver for testing emails in laravel.",
+    "description": "Preview mail driver for testing emails in Laravel",
     "keywords": ["laravel", "mail"],
     "homepage": "https://github.com/themsaid/laravel-preview-mail-driver",
     "license": "MIT",
@@ -40,6 +40,13 @@
             ]
         }
     },
+    "scripts": {
+        "test": "vendor/bin/phpunit --colors=always",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    }
 }
