@@ -59,7 +59,7 @@ class MailPreviewServiceProvider extends PackageServiceProvider
     protected function middleware(): array
     {
         return array_merge(
-            $this->app['config']['mail-preview.middleware'],
+            config('mail-preview.middleware'),
             [StartSession::class]
         );
     }
