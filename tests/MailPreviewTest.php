@@ -12,7 +12,7 @@ class MailPreviewTest extends TestCase
     {
         $this->assertTrue(true);
 
-        Mail::raw('laravel mail preview test', function(Message $message) {
+        Mail::raw('laravel mail preview test', function (Message $message) {
             $message->to('john@example.com');
         });
 

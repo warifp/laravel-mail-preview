@@ -49,7 +49,8 @@ class MailPreviewServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/config/mailpreview.php', 'mailpreview'
+            __DIR__.'/config/mailpreview.php',
+            'mailpreview'
         );
     }
 
