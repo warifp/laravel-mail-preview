@@ -32,14 +32,14 @@ class MailPreviewServiceProvider extends PackageServiceProvider
             config('mail-preview.maximum_lifetime')
         );
 
-        app('mail.manager')->extend('preview', fn() => $previewTransport);
+        app('mail.manager')->extend('preview', fn () => $previewTransport);
 
         return $this;
     }
 
     protected function registerPreviewRoute(): self
     {
-        if (!config('mail-preview.show_link_to_preview')) {
+        if (! config('mail-preview.show_link_to_preview')) {
             return $this;
         }
 
