@@ -65,7 +65,6 @@ class PreviewMailTransport extends Transport
         return $this->previewPath . '/' . Str::slug($message->getDate()->format('u') . '_' . $to . $subject, '_');
     }
 
-
     protected function getMessageInfo(Swift_Mime_SimpleMessage $message): string
     {
         return sprintf(
