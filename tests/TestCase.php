@@ -27,7 +27,7 @@ abstract class TestCase extends Orchestra
         ];
     }
 
-    protected function assertLatestStoredMailContains(string $substring): void
+    protected function assertLatestMailContains(string $substring): void
     {
         $this->assertDirectoryExists(config('mail-preview.storage_path'));
 

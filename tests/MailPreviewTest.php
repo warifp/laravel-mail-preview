@@ -10,10 +10,8 @@ class MailPreviewTest extends TestCase
     /** @test */
     public function it_will_write_sent_mails_to_disk()
     {
-        Mail::raw('laravel mail preview test', function (Message $message) {
-            return $message->to('john@example.com');
-        });
+        Mail::raw('mail content', fn(Message $message) => $message->to('john@example.com'));
 
-        $this->assertLatestStoredMailContains("laravel mail preview test");
+        $this->assertLatestMailContains("mail content");
     }
 }
