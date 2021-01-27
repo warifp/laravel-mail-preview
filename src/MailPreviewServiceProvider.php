@@ -7,7 +7,6 @@ use Illuminate\Session\Middleware\StartSession;
 use Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Spatie\MailPreview\Http\Middleware\AddMailPreviewPopupToResponse;
 
 class MailPreviewServiceProvider extends PackageServiceProvider
 {
