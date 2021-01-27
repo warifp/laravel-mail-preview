@@ -41,7 +41,7 @@ class MailPreviewServiceProvider extends PackageServiceProvider
 
     protected function registerRouteMacro(): self
     {
-        Route::macro('mailPreview', function(string $prefix = 'spatie-mail-preview') {
+        Route::macro('mailPreview', function (string $prefix = 'spatie-mail-preview') {
             Route::get($prefix)->middleware(StartSession::class)->name('mail.preview');
         });
 
