@@ -11,32 +11,46 @@ class MailPreviewMiddleware
     {
         $response = $next($request);
 
-        if ($this->shouldAttachPreviewLinkToResponse($request, $response)) {
-            $this->attachPreviewLink(
-                $response,
-                $request->session()->get('mail_preview_path')
-            );
-
-            $request->session()->forget('mail_preview_path');
+        if (!$this->shouldAttachPreviewLinkToResponse($request, $response)) {
+            return $request;
         }
+
+        $this->attachPreviewLink(
+            $response,
+            $request->session()->get('mail_preview_path')
+        );
+
+        $request->session()->forget('mail_preview_path');
 
         return $response;
     }
 
-    protected function shouldAttachPreviewLinkToResponse($request, $response)
+    protected function shouldAttachPreviewLinkToResponse($request, $response): bool
     {
-        return
-            ! app()->runningInConsole() &&
-            $response instanceof Response &&
-            $request->hasSession() &&
-            $request->session()->get('mail_preview_path');
+        if (app()->runningInConsole()) {
+            return false;
+        }
+
+        if (! $response instanceof Response) {
+            return false;
+        }
+
+        if (! $request->hasSession()) {
+            return false;
+        }
+
+        if (! $request->session()->get('mail_preview_path')) {
+            return false;
+        }
+
+        return true;
     }
 
     protected function attachPreviewLink($response, $previewPath)
     {
         $content = $response->getContent();
 
-        $previewUrl = url('/themsaid/mail-preview?path='.$previewPath);
+        $previewUrl = url('/themsaid/mail-preview?path=' . $previewPath);
 
         $timeout = intval(config('mail-preview.popup_timeout', 8000));
 
@@ -62,8 +76,8 @@ HTML;
 
         if (false !== $bodyPosition) {
             $content = substr($content, 0, $bodyPosition)
-                .$linkContent
-                .substr($content, $bodyPosition);
+                . $linkContent
+                . substr($content, $bodyPosition);
         }
 
         $response->setContent($content);
