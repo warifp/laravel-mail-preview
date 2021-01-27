@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\MailPreview;
+namespace Spatie\MailPreview\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Response;
 
-class MailPreviewMiddleware
+class AddMailPreviewPopupToResponse
 {
     public function handle($request, Closure $next)
     {

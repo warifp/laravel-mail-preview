@@ -1,8 +1,8 @@
 <?php
 
-namespace Spatie\MailPreview;
+namespace Spatie\MailPreview\Http\Controllers;
 
-class PreviewMailController
+class ShowMailController
 {
     public function __invoke()
     {

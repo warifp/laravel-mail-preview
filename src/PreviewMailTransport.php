@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Swift_Mime_SimpleMessage;
 
-class PreviewTransport extends Transport
+class PreviewMailTransport extends Transport
 {
     protected Filesystem $files;
 

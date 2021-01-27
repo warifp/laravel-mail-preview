@@ -7,6 +7,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Spatie\MailPreview\Http\Middleware\AddMailPreviewPopupToResponse;
 
 class MailPreviewServiceProvider extends PackageServiceProvider
 {
@@ -26,7 +27,7 @@ class MailPreviewServiceProvider extends PackageServiceProvider
 
     protected function registerPreviewMailTransport(): self
     {
-        $previewTransport = new PreviewTransport(
+        $previewTransport = new PreviewMailTransport(
             app(Filesystem::class),
             config('mail-preview.storage_path'),
             config('mail-preview.maximum_lifetime_in_seconds')
@@ -48,7 +49,7 @@ class MailPreviewServiceProvider extends PackageServiceProvider
         foreach (config('mail-preview.middleware_groups') as $groupName) {
             app('router')->pushMiddlewareToGroup(
                 $groupName,
-                MailPreviewMiddleware::class
+                AddMailPreviewPopupToResponse::class
             );
         }
 

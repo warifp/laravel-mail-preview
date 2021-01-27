@@ -18,10 +18,22 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 
 ## Installation
 
-Begin by installing the package through Composer. Run the following command in your terminal:
+You can install the package via composer:
 
 ```bash
-composer require themsaid/laravel-mail-preview
+composer require spatie/laravel-mail-preview
+```
+
+Optionally, you can publish the config file with:
+
+```bash
+php artisan vendor:publish --provider="Spatie\Skeleton\SkeletonServiceProvider" --tag="laravel-mail-preview-config"
+```
+
+This is the content of the config file that will be published at `config/mail-preview.php`:
+
+```php
+
 ```
 
 Then publish the config file:
