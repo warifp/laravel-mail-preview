@@ -50,9 +50,9 @@ class MailPreviewMiddleware
     {
         $content = $response->getContent();
 
-        $previewUrl = url('/themsaid/mail-preview?path=' . $previewPath);
+        $previewUrl = route('mail.preview', ['path' => $previewPath]);
 
-        $timeout = intval(config('mail-preview.popup_timeout', 8000));
+        $timeout = config('mail-preview.popup_timeout');
 
         $linkContent = <<<HTML
 <div id="MailPreviewDriverBox" style="

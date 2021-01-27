@@ -3,6 +3,7 @@
 namespace Spatie\MailPreview;
 
 use Illuminate\Session\Middleware\StartSession;
+use Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -17,7 +18,7 @@ class MailPreviewServiceProvider extends PackageServiceProvider
 
     public function boot()
     {
-        $this->app['mail.manager']->extend('preview', function () {
+        app('mail.manager')->extend('preview', function () {
             return new PreviewTransport(
                 $this->app->make('Illuminate\Filesystem\Filesystem'),
                 $this->app['config']['mail-preview.path'],
@@ -25,10 +26,8 @@ class MailPreviewServiceProvider extends PackageServiceProvider
             );
         });
 
-        if ($this->app['config']['mail-preview.show_link_to_preview']) {
-            $this->app['router']->group(['middleware' => $this->middleware()], function ($router) {
-                $router->get('/themsaid/mail-preview')->uses(MailPreviewController::class.'@preview');
-            });
+        if (config('mail-preview.show_link_to_preview')) {
+            Route::get('spatie/mail-preview')->middleware($this->middleware())->name('mail.preview');
 
             if ($this->app['config']['mail-preview.middleware_groups']) {
                 foreach ($this->app['config']['mail-preview.middleware_groups'] as $groupName) {

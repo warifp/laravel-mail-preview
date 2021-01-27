@@ -2,9 +2,9 @@
 
 namespace Spatie\MailPreview;
 
-class MailPreviewController
+class PreviewMailController
 {
-    public function preview()
+    public function __invoke()
     {
         return file_get_contents(
             request('path')

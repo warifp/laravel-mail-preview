@@ -10,46 +10,21 @@ use Swift_Mime_SimpleMessage;
 
 class PreviewTransport extends Transport
 {
-    /**
-     * The Filesystem instance.
-     *
-     * @var \Illuminate\Filesystem\Filesystem
-     */
-    protected $files;
+    protected Filesystem $files;
 
-    /**
-     * Get the preview path.
-     *
-     * @var string
-     */
-    protected $previewPath;
+    protected string $previewPath;
 
-    /**
-     * Time in seconds to keep old previews.
-     *
-     * @var int
-     */
-    protected $lifeTime;
+    protected int $lifeTime;
 
-    /**
-     * Create a new preview transport instance.
-     *
-     * @param \Illuminate\Filesystem\Filesystem $files
-     * @param string $previewPath
-     * @param int $lifeTime
-     *
-     * @return void
-     */
-    public function __construct(Filesystem $files, $previewPath, $lifeTime = 60)
+    public function __construct(Filesystem $files, string $previewPath, int $lifeTime = 60)
     {
         $this->files = $files;
+
         $this->previewPath = $previewPath;
+
         $this->lifeTime = $lifeTime;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
     {
         $this->beforeSendPerformed($message);
@@ -61,24 +36,17 @@ class PreviewTransport extends Transport
         Session::put('mail_preview_path', basename($previewPath = $this->getPreviewFilePath($message)));
 
         $this->files->put(
-            $previewPath.'.html',
+            "{$previewPath}.html",
             $this->getHTMLPreviewContent($message)
         );
 
         $this->files->put(
-            $previewPath.'.eml',
+            "{$previewPath}.eml",
             $this->getEMLPreviewContent($message)
         );
     }
 
-    /**
-     * Get the path to the email preview file.
-     *
-     * @param \Swift_Mime_SimpleMessage $message
-     *
-     * @return string
-     */
-    protected function getPreviewFilePath(Swift_Mime_SimpleMessage $message)
+    protected function getPreviewFilePath(Swift_Mime_SimpleMessage $message): string
     {
         $recipients = array_keys($message->getTo());
 
@@ -96,40 +64,19 @@ class PreviewTransport extends Transport
             );
     }
 
-    /**
-     * Get the HTML content for the preview file.
-     *
-     * @param \Swift_Mime_SimpleMessage $message
-     *
-     * @return string
-     */
-    protected function getHTMLPreviewContent(Swift_Mime_SimpleMessage $message)
+    protected function getHTMLPreviewContent(Swift_Mime_SimpleMessage $message): string
     {
         $messageInfo = $this->getMessageInfo($message);
 
         return $messageInfo.$message->getBody();
     }
 
-    /**
-     * Get the EML content for the preview file.
-     *
-     * @param \Swift_Mime_SimpleMessage $message
-     *
-     * @return string
-     */
-    protected function getEMLPreviewContent(Swift_Mime_SimpleMessage $message)
+    protected function getEMLPreviewContent(Swift_Mime_SimpleMessage $message): string
     {
         return $message->toString();
     }
 
-    /**
-     * Generate a human readable HTML comment with message info.
-     *
-     * @param \Swift_Mime_SimpleMessage $message
-     *
-     * @return string
-     */
-    protected function getMessageInfo(Swift_Mime_SimpleMessage $message)
+    protected function getMessageInfo(Swift_Mime_SimpleMessage $message): string
     {
         return sprintf(
             "<!--\nFrom:%s, \nto:%s, \nreply-to:%s, \ncc:%s, \nbcc:%s, \nsubject:%s\n-->\n",
@@ -142,26 +89,16 @@ class PreviewTransport extends Transport
         );
     }
 
-    /**
-     * Create the preview directory if necessary.
-     *
-     * @return void
-     */
-    protected function createEmailPreviewDirectory()
+    protected function createEmailPreviewDirectory(): void
     {
         if (! $this->files->exists($this->previewPath)) {
             $this->files->makeDirectory($this->previewPath);
 
-            $this->files->put($this->previewPath.'/.gitignore', "*\n!.gitignore");
+            $this->files->put("{$this->previewPath}/.gitignore", "*\n!.gitignore");
         }
     }
 
-    /**
-     * Delete previews older than the given life time configuration.
-     *
-     * @return void
-     */
-    protected function cleanOldPreviews()
+    protected function cleanOldPreviews(): void
     {
         $oldPreviews = array_filter($this->files->files($this->previewPath), function ($file) {
             return time() - $this->files->lastModified($file) > $this->lifeTime;

@@ -32,9 +32,7 @@ abstract class TestCase extends Orchestra
         $this->assertDirectoryExists(config('mail-preview.path'));
 
         $latestMailPath = collect(File::allFiles(config('mail-preview.path')))
-            ->sortByDesc(function (SplFileInfo $file) {
-                return $file->getMTime();
-            })
+            ->sortByDesc(fn(SplFileInfo $file) => $file->getMTime())
             ->first()
             ->getPathName();
 
