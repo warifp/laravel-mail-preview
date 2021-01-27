@@ -2,11 +2,11 @@
 
 namespace Spatie\MailPreview;
 
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Mail\Transport\Transport;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Swift_Mime_SimpleMessage;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Mail\Transport\Transport;
 
 class PreviewTransport extends Transport
 {
@@ -91,7 +91,8 @@ class PreviewTransport extends Transport
         return $this->previewPath.
             '/'.
             Str::slug(
-                $message->getDate()->format('u').'_'.$to.$subject, '_'
+                $message->getDate()->format('u').'_'.$to.$subject,
+                '_'
             );
     }
 

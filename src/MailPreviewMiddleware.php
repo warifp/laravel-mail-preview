@@ -20,7 +20,8 @@ class MailPreviewMiddleware
 
         if ($this->shouldAttachPreviewLinkToResponse($request, $response)) {
             $this->attachPreviewLink(
-                $response, $request->session()->get('mail_preview_path')
+                $response,
+                $request->session()->get('mail_preview_path')
             );
 
             $request->session()->forget('mail_preview_path');
@@ -41,7 +42,6 @@ class MailPreviewMiddleware
             $response instanceof Response &&
             $request->hasSession() &&
             $request->session()->get('mail_preview_path');
-
     }
 
     /**
