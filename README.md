@@ -5,8 +5,11 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-mail-preview.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-mail-preview)
 
-This package introduces a new `preview` mail driver for Laravel that when selected will render the content of the
-sent email and save it as both `.html` and `.eml` files.
+This package contains `preview` mail driver that will save all sent mails as `html` and `eml` on disk.
+
+Additionally, the package can, whenever a mail is sent, inject a link to the contents of the sent mail in the response.
+
+
 
 ## Support us
 
@@ -124,8 +127,8 @@ You can modify the file that will be published at `resources/views/vendor/mail-p
 Everytime an email is sent, an `.html` and `.eml` file will be generated in `storage/email-previews` with a name that includes the first recipient and the subject:
 
 ```
-1457904864_jack_at_gmail_com_invoice_000234.html
-1457904864_jack_at_gmail_com_invoice_000234.eml
+1457904864_john_at_example_com_invoice_000234.html
+1457904864_john_at_example_com_invoice_000234.eml
 ```
 
 You can open the `.html` file in a web browser, or open the `.eml` file in your default email client to have a realistic look
@@ -147,18 +150,6 @@ cc:[{"finance@acme.com":"Acme Finance"}, {"management@acme.com":"Acme Management
 bcc:null,
 subject:Invoice #000234
 -->
-```
-
-### Package Configurations
-From the `config/mailpreview.php` file you'll be able to change the output location of the preview files as well as the maximum lifetime for keeping previews, after this time old previews will get removed.
-
-### Logged out after clicked on the preview link
-You will always lose your current session if you click on the generated notification link. This is because Laravel stores the session in an encrypted cookie. To change this behavior, you have to adjust the `middleware` property in the `config/mailpreview.php` file to match the following snippet:
-
-```php
-    'middleware' => [
-        \App\Http\Middleware\EncryptCookies::class,
-    ],
 ```
 
 ## Changelog
