@@ -17,28 +17,42 @@ class MailPreviewServiceProvider extends PackageServiceProvider
             ->hasConfigFile();
     }
 
-    public function boot()
+    public function packageBooted()
     {
-        app('mail.manager')->extend('preview', function () {
-            return new PreviewTransport(
-                app(Filesystem::class),
-                config('mail-preview.path'),
-                config('mail-preview.maximum_lifetime')
-            );
-        });
+        $this
+            ->registerPreviewMailTransport()
+            ->registerPreviewRoute();
+    }
 
-        if (config('mail-preview.show_link_to_preview')) {
-            Route::get('spatie/mail-preview')->middleware($this->middleware())->name('mail.preview');
+    protected function registerPreviewMailTransport(): self
+    {
+        $previewTransport = new PreviewTransport(
+            app(Filesystem::class),
+            config('mail-preview.path'),
+            config('mail-preview.maximum_lifetime')
+        );
 
-            if (config('mail-preview.middleware_groups')) {
-                foreach (config('mail-preview.middleware_groups') as $groupName) {
-                    app('router')->pushMiddlewareToGroup(
-                        $groupName,
-                        MailPreviewMiddleware::class
-                    );
-                }
-            }
+        app('mail.manager')->extend('preview', fn() => $previewTransport);
+
+        return $this;
+    }
+
+    protected function registerPreviewRoute(): self
+    {
+        if (!config('mail-preview.show_link_to_preview')) {
+            return $this;
         }
+
+        Route::get('spatie/mail-preview')->middleware($this->middleware())->name('mail.preview');
+
+        foreach (config('mail-preview.middleware_groups') as $groupName) {
+            app('router')->pushMiddlewareToGroup(
+                $groupName,
+                MailPreviewMiddleware::class
+            );
+        }
+
+        return $this;
     }
 
     protected function middleware(): array
