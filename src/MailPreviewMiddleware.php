@@ -11,7 +11,7 @@ class MailPreviewMiddleware
     {
         $response = $next($request);
 
-        if (!$this->shouldAttachPreviewLinkToResponse($request, $response)) {
+        if (! $this->shouldAttachPreviewLinkToResponse($request, $response)) {
             return $request;
         }
 
