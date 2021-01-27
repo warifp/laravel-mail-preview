@@ -31,6 +31,10 @@ class AddMailPreviewPopupToResponse
             return false;
         }
 
+        if (! config('mail-preview.show_link_to_preview')) {
+            return false;
+        }
+
         if (! $response instanceof Response) {
             return false;
         }

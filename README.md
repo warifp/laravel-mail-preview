@@ -29,20 +29,40 @@ composer require spatie/laravel-mail-preview
 This package contains a mail transport called `preview`. We recommend to only use this transport in non-production environments. To use the `preview` transport, change the `mailers.smtp.transport` to `preview` in your `config/mail.php` file:
 
 ```
+// in config/mail.php
+
 'mailers' => [
     'smtp' => [
         'transport' => 'preview',
         // ...
     ],
     // ...
-]
+],
 ```
 
-### Registering the preview route
+### Registering the preview middleware route
 
-The package can display a links to sent mails whenever they are sent. To use this feature, you must add this route to your routes file. Typically, the routes file will be located at `routes/web.php`.
+The package can display a links to sent mails whenever they are sent. To use this feature, you must add the `Spatie\MailPreview\Http\Middleware\AddMailPreviewPopupToResponse` middleware to the `web` middleware group in your kernel.
 
 ```php
+// in app/Http/Kernel.php
+
+protected $middlewareGroups = [
+    'web' => [
+        // other middleware
+        
+        \Spatie\MailPreview\Http\Middleware\AddMailPreviewPopupToResponse::class,
+    ],
+    
+    // ...
+];
+```
+
+You must also add the `mailPreview` to your routes file. Typically, the routes file will be located at `routes/web.php`.
+
+```php
+// in routes/web.php
+
 Route::mailPreview();
 ```
 

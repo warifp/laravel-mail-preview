@@ -23,8 +23,7 @@ class MailPreviewServiceProvider extends PackageServiceProvider
     {
         $this
             ->registerPreviewMailTransport()
-            ->registerRouteMacro()
-            ->registerPreviewMiddleware();
+            ->registerRouteMacro();
     }
 
     protected function registerPreviewMailTransport(): self
@@ -36,22 +35,6 @@ class MailPreviewServiceProvider extends PackageServiceProvider
         );
 
         app('mail.manager')->extend('preview', fn () => $previewTransport);
-
-        return $this;
-    }
-
-    protected function registerPreviewMiddleware(): self
-    {
-        if (! config('mail-preview.show_link_to_preview')) {
-            return $this;
-        }
-
-        foreach (config('mail-preview.middleware_groups') as $groupName) {
-            app('router')->pushMiddlewareToGroup(
-                $groupName,
-                AddMailPreviewPopupToResponse::class
-            );
-        }
 
         return $this;
     }
