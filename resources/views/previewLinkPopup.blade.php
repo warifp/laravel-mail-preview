@@ -6,7 +6,7 @@
     border:solid 1px #ccc;
     padding: 15px;
     ">
-    An email was just sent: <a href="{{ $previewUrl }}">Preview Sent Email</a>
+    An email was just sent: <a href="{{ $previewUrl }}">Preview sent mail</a>
 </div>
 <script type="text/javascript">
     setTimeout(function () {

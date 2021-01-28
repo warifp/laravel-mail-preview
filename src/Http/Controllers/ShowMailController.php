@@ -11,9 +11,11 @@ class ShowMailController
         $storedMailFileName = $request->get('mail_preview_file_name');
 
         $storedMailPath = $storedMailFileName
-            ? config('mail-preview.path').'/'.$storedMailFileName.'.html'
-            : last(glob(config('mail-preview.path').'/*.html'));
+            ? config('mail-preview.storage_path').'/'.$storedMailFileName.'.html'
+            : last(glob(config('mail-preview.storage_path').'/*.html'));
 
-        return file_get_contents($storedMailPath);
+        return view('laravel-mail-preview::showMail', [
+            'content' => file_get_contents($storedMailPath),
+        ]);
     }
 }

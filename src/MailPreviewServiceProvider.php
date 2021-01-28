@@ -7,6 +7,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Spatie\MailPreview\Http\Controllers\ShowMailController;
 
 class MailPreviewServiceProvider extends PackageServiceProvider
 {
@@ -41,7 +42,7 @@ class MailPreviewServiceProvider extends PackageServiceProvider
     protected function registerRouteMacro(): self
     {
         Route::macro('mailPreview', function (string $prefix = 'spatie-mail-preview') {
-            Route::get($prefix)->middleware(StartSession::class)->name('mail.preview');
+            Route::get($prefix, '\\' . ShowMailController::class)->name('mail.preview');
         });
 
         return $this;

@@ -9,8 +9,6 @@ This package contains `preview` mail driver that will save all sent mails as `ht
 
 Additionally, the package can, whenever a mail is sent, inject a link to the contents of the sent mail in the response.
 
-
-
 ## Support us
 
 [<img src="https://github-ads.s3.eu-central-1.amazonaws.com/package-skeleton-laravel.jpg?t=2" width="419px" />](https://spatie.be/github-ad-click/package-skeleton-laravel)
