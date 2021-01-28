@@ -7,7 +7,7 @@
 
 This package can display a small overlay whenever a mail is sent.
 
-
+<img alt="screenshot" src="http://spatie.github.io/laravel-mail-preview/images/overlay.png" width="400" />
 
 Additionally, the package can, whenever a mail is sent, inject a link to the contents of the sent mail in the response.
 
