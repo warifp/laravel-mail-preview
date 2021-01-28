@@ -5,7 +5,7 @@ namespace Spatie\MailPreview\Http\Middleware;
 use Closure;
 use Illuminate\Http\Response;
 
-class AddMailPreviewPopupToResponse
+class AddMailPreviewOverlayToResponse
 {
     public function handle($request, Closure $next)
     {
