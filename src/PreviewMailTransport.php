@@ -12,7 +12,7 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class PreviewMailTransport extends Transport
 {
-    protected Filesystem $files;
+    protected Filesystem $filesystem;
 
     protected string $previewPath;
 
@@ -20,7 +20,7 @@ class PreviewMailTransport extends Transport
 
     public function __construct(Filesystem $files, string $previewPath, int $maximumLifeTimeInSeconds = 60)
     {
-        $this->files = $files;
+        $this->filesystem = $files;
 
         $this->previewPath = $previewPath;
 
@@ -42,8 +42,8 @@ class PreviewMailTransport extends Transport
         $htmlFullPath = "{$previewPath}.html";
         $emlFullPath = "{$previewPath}.html";
 
-        $this->files->put($htmlFullPath, $this->getHtmlPreviewContent($message));
-        $this->files->put($emlFullPath, $this->getEmlPreviewContent($message));
+        $this->filesystem->put($htmlFullPath, $this->getHtmlPreviewContent($message));
+        $this->filesystem->put($emlFullPath, $this->getEmlPreviewContent($message));
 
         event(new MailStoredEvent($message, $htmlFullPath, $emlFullPath));
     }
@@ -88,26 +88,26 @@ class PreviewMailTransport extends Transport
 
     protected function ensureEmailPreviewDirectoryExists(): self
     {
-        if ($this->files->exists($this->previewPath)) {
+        if ($this->filesystem->exists($this->previewPath)) {
             return $this;
         }
 
-        $this->files->makeDirectory($this->previewPath);
+        $this->filesystem->makeDirectory($this->previewPath);
 
-        $this->files->put("{$this->previewPath}/.gitignore", '*' . PHP_EOL . '!.gitignore');
+        $this->filesystem->put("{$this->previewPath}/.gitignore", '*' . PHP_EOL . '!.gitignore');
 
         return $this;
     }
 
     protected function cleanOldPreviews(): self
     {
-        collect($this->files->files($this->previewPath))
+        collect($this->filesystem->files($this->previewPath))
             ->filter(function (SplFileInfo $path) {
                 $fileAgeInSeconds = Carbon::createFromTimestamp($path->getCTime())->diffInSeconds();
 
                 return $fileAgeInSeconds >= $this->maximumLifeTimeInSeconds;
             })
-            ->each(fn (SplFileInfo $file) => $this->files->delete($file->getPathname()));
+            ->each(fn (SplFileInfo $file) => $this->filesystem->delete($file->getPathname()));
 
         return $this;
     }
