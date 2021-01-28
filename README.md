@@ -45,7 +45,7 @@ This package contains a mail transport called `preview`. We recommend to only us
 
 ### Registering the preview middleware route
 
-The package can display a links to sent mails whenever they are sent. To use this feature, you must add the `Spatie\MailPreview\Http\Middleware\AddMailPreviewPopupToResponse` middleware to the `web` middleware group in your kernel.
+The package can display a link to sent mails whenever they are sent. To use this feature, you must add the `Spatie\MailPreview\Http\Middleware\AddMailPreviewPopupToResponse` middleware to the `web` middleware group in your kernel.
 
 ```php
 // in app/Http/Kernel.php
@@ -124,7 +124,7 @@ You can modify the views that will be published at `resources/views/vendor/mail-
 
 ## Usage
 
-Everytime an email is sent, an `.html` and `.eml` file will be savind in the directory specified in the `storage_path` of the `mail-preview` config file.  The name includes the first recipient and the subject:
+Everytime an email is sent, an `.html` and `.eml` file will be saved in the directory specified in the `storage_path` of the `mail-preview` config file.  The name includes the first recipient and the subject:
 
 ```
 1457904864_john_at_example_com_invoice_000234.html
