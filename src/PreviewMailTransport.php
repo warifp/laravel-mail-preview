@@ -107,7 +107,7 @@ class PreviewMailTransport extends Transport
 
                 return $fileAgeInSeconds >= $this->maximumLifeTimeInSeconds;
             })
-            ->each(fn (SplFileInfo $file) => $this->files->delete(ray()->pass($file->getPathname())));
+            ->each(fn (SplFileInfo $file) => $this->files->delete($file->getPathname()));
 
         return $this;
     }
