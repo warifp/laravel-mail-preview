@@ -5,11 +5,11 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-mail-preview.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-mail-preview)
 
-This package can display a small overlay whenever a mail is sent.
+This package can display a small overlay whenever a mail is sent. The overlay contains a link to the mail that was just sent.
 
 <img alt="screenshot" src="http://spatie.github.io/laravel-mail-preview/images/overlay.png" width="400" />
 
-Additionally, the package can, whenever a mail is sent, inject a link to the contents of the sent mail in the response.
+This can be handy when testing out emails in a local environment. 
 
 ## Support us
 
@@ -173,8 +173,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [Mohamed Said](https://github.com/themsaid)
 - [Freek Van der Herten](https://github.com/freekmurze)
+- [Mohamed Said](https://github.com/themsaid)
 - [All Contributors](../../contributors)
 
 The initial version of this package was created by Mohamed Said, who graciously entrusted this package to us at Spatie.
