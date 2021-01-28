@@ -163,6 +163,10 @@ Whenever a mail is stored on disk, the `Spatie\MailPreview\Events\MailStoredEven
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
+## UPGRADING
+
+Please see [UPGRADING](UPGRADING.md) for what to do to switch over from `themsaid/laravel-mail-preview`, and how to upgrade to newer major versions.
+
 ## Contributing
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
