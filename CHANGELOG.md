@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mail-preview` will be documented in this file.
 
+## 5.0.4 - 2021-01-28
+
+- allow to dynamically switch storage path
+
 ## 5.0.3 - 2021-01-28
 
 - fix displaying mails

@@ -14,15 +14,11 @@ class PreviewMailTransport extends Transport
 {
     protected Filesystem $filesystem;
 
-    protected string $previewPath;
-
     protected int $maximumLifeTimeInSeconds;
 
-    public function __construct(Filesystem $files, string $previewPath, int $maximumLifeTimeInSeconds = 60)
+    public function __construct(Filesystem $files, int $maximumLifeTimeInSeconds = 60)
     {
         $this->filesystem = $files;
-
-        $this->previewPath = $previewPath;
 
         $this->maximumLifeTimeInSeconds = $maximumLifeTimeInSeconds;
     }
@@ -74,7 +70,7 @@ class PreviewMailTransport extends Transport
 
         $subject = $message->getSubject();
 
-        return $this->previewPath . '/' . Str::slug($message->getDate()->format('u') . '_' . $to . $subject, '_');
+        return $this->storagePath() . '/' . Str::slug($message->getDate()->format('u') . '_' . $to . $subject, '_');
     }
 
     protected function getMessageInfo(Swift_Mime_SimpleMessage $message): string
@@ -92,20 +88,20 @@ class PreviewMailTransport extends Transport
 
     protected function ensureEmailPreviewDirectoryExists(): self
     {
-        if ($this->filesystem->exists($this->previewPath)) {
+        if ($this->filesystem->exists($this->storagePath())) {
             return $this;
         }
 
-        $this->filesystem->makeDirectory($this->previewPath);
+        $this->filesystem->makeDirectory($this->storagePath());
 
-        $this->filesystem->put("{$this->previewPath}/.gitignore", '*' . PHP_EOL . '!.gitignore');
+        $this->filesystem->put("{$this->storagePath()}/.gitignore", '*' . PHP_EOL . '!.gitignore');
 
         return $this;
     }
 
     protected function cleanOldPreviews(): self
     {
-        collect($this->filesystem->files($this->previewPath))
+        collect($this->filesystem->files($this->storagePath()))
             ->filter(function (SplFileInfo $path) {
                 $fileAgeInSeconds = Carbon::createFromTimestamp($path->getCTime())->diffInSeconds();
 
@@ -114,5 +110,10 @@ class PreviewMailTransport extends Transport
             ->each(fn (SplFileInfo $file) => $this->filesystem->delete($file->getPathname()));
 
         return $this;
+    }
+
+    protected function storagePath(): string
+    {
+        return config('mail-preview.storage_path');
     }
 }

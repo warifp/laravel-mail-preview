@@ -29,7 +29,6 @@ class MailPreviewServiceProvider extends PackageServiceProvider
     {
         $previewTransport = new PreviewMailTransport(
             app(Filesystem::class),
-            config('mail-preview.storage_path'),
             config('mail-preview.maximum_lifetime_in_seconds')
         );
 
