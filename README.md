@@ -1,12 +1,16 @@
-# A mail driver that saves the rendered mails to disk
+# A mail driver to quickly preview mail
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-mail-preview.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-mail-preview)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/spatie/laravel-mail-preview/run-tests?label=tests)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-mail-preview.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-mail-preview)
 
-This package introduces a new `preview` mail driver for Laravel that when selected will render the content of the
-sent email and save it as both `.html` and `.eml` files.
+This package can display a small overlay whenever a mail is sent.
+
+
+
+
+Additionally, the package can, whenever a mail is sent, inject a link to the contents of the sent mail in the response.
 
 ## Support us
 
@@ -18,46 +22,122 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 
 ## Installation
 
-Begin by installing the package through Composer. Run the following command in your terminal:
+You can install the package via composer:
 
 ```bash
-composer require themsaid/laravel-mail-preview
+composer require spatie/laravel-mail-preview
 ```
 
-Then publish the config file:
+### Configuring the mail transport
+
+This package contains a mail transport called `preview`. We recommend to only use this transport in non-production environments. To use the `preview` transport, change the `mailers.smtp.transport` to `preview` in your `config/mail.php` file:
 
 ```
-php artisan vendor:publish --provider="Spatie\MailPreview\MailPreviewServiceProvider"
-```
+// in config/mail.php
 
-Finally, change the `mailers.smtp.transport` to `preview` in your `config/mail.php` file:
-
-```
 'mailers' => [
     'smtp' => [
         'transport' => 'preview',
         // ...
     ],
     // ...
-]
+],
 ```
+
+### Registering the preview middleware route
+
+The package can display a links to sent mails whenever they are sent. To use this feature, you must add the `Spatie\MailPreview\Http\Middleware\AddMailPreviewPopupToResponse` middleware to the `web` middleware group in your kernel.
+
+```php
+// in app/Http/Kernel.php
+
+protected $middlewareGroups = [
+    'web' => [
+        // other middleware
+        
+        \Spatie\MailPreview\Http\Middleware\AddMailPreviewOverlayToResponse::class,
+    ],
+    
+    // ...
+];
+```
+
+You must also add the `mailPreview` to your routes file. Typically, the routes file will be located at `routes/web.php`.
+
+```php
+// in routes/web.php
+
+Route::mailPreview();
+```
+
+This will register a route to display sent mails at `/spatie-mail-preview`. To customize the URL, pass the URL you want to the macro.
+
+```php
+Route::mailPreview('custom-url-where-sent-mails-will-be-shown');
+```
+
+### Publishing the config file
+
+Optionally, you can publish the config file with:
+
+```bash
+php artisan vendor:publish --provider="Spatie\MailPreview\MailPreviewServiceProvider" --tag="laravel-mail-preview-config"
+```
+
+This is the content of the config file that will be published at `config/mail-preview.php`:
+
+```php
+return [
+    /*
+     * All mails will be stored in the given directory.
+     */
+    'storage_path' => storage_path('email-previews'),
+
+    /*
+     * This option determines how long generated preview files will be kept.
+     */
+    'maximum_lifetime_in_seconds' => 60,
+
+    /*
+     * When enabled, a link to mail will be added to the response
+     * every time a mail is sent.
+     */
+    'show_link_to_preview' => true,
+
+    /*
+     * Determines how long the preview pop up should remain visible.
+     *
+     * Set this to `false` if the popup should stay visible.
+     */
+    'popup_timeout_in_seconds' => 8,
+];
+```
+
+### Publishing the views
+
+Optionally, you can publish the views that render the preview overlay and the mail itself.
+
+```bash
+php artisan vendor:publish --provider="Spatie\MailPreview\MailPreviewServiceProvider" --tag="laravel-mail-preview-views"
+```
+
+You can modify the views that will be published at `resources/views/vendor/mail-preview` to your liking.
 
 ## Usage
 
-Everytime an email is sent, an `.html` and `.eml` file will be generated in `storage/email-previews` with a name that includes the first recipient and the subject:
+Everytime an email is sent, an `.html` and `.eml` file will be savind in the directory specified in the `storage_path` of the `mail-preview` config file.  The name includes the first recipient and the subject:
 
 ```
-1457904864_jack_at_gmail_com_invoice_000234.html
-1457904864_jack_at_gmail_com_invoice_000234.eml
+1457904864_john_at_example_com_invoice_000234.html
+1457904864_john_at_example_com_invoice_000234.eml
 ```
 
-You can open the `.html` file in a web browser, or open the `.eml` file in your default email client to have a realistic look
-at the final output.
+You can open the `.html` file in a web browser.  The `.eml` file in your default email client to have a realistic look
+of the final output.
 
 ### Preview in a web browser
 
-When you open the `.html` file in a web browser you'll be able to see how your email will look, however there might be
-some differences that varies from one email client to another.
+When you open the `.html` file in a web browser you'll be able to see how your email will look.
 
 At the beginning of the generated file you'll find an HTML comment with all the message info:
 
@@ -72,17 +152,13 @@ subject:Invoice #000234
 -->
 ```
 
-### Package Configurations
-From the `config/mailpreview.php` file you'll be able to change the output location of the preview files as well as the maximum lifetime for keeping previews, after this time old previews will get removed.
+### Events
 
-### Logged out after clicked on the preview link
-You will always lose your current session if you click on the generated notification link. This is because Laravel stores the session in an encrypted cookie. To change this behavior, you have to adjust the `middleware` property in the `config/mailpreview.php` file to match the following snippet:
+Whenever a mail is stored on disk, the `Spatie\MailPreview\Events\MailStoredEvent` will be fired. It has three public properties:
 
-```php
-    'middleware' => [
-        \App\Http\Middleware\EncryptCookies::class,
-    ],
-```
+- `message`: an instance of `Swift_Mime_SimpleMessage`
+- `pathToHtmlVersion`: the path to the html version of the sent mail
+- `pathToEmlVersion`: the path to the email version of the sent mail
 
 ## Changelog
 
