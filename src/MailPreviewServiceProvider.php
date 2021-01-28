@@ -3,7 +3,6 @@
 namespace Spatie\MailPreview;
 
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Session\Middleware\StartSession;
 use Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
