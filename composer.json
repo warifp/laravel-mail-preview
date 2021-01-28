@@ -1,6 +1,6 @@
 {
     "name": "spatie/laravel-mail-preview",
-    "description": "Preview mail driver for testing emails in Laravel",
+    "description": "A mail driver to quickly preview mail",
     "keywords": ["laravel", "mail"],
     "homepage": "https://github.com/themsaid/laravel-preview-mail-driver",
     "license": "MIT",
