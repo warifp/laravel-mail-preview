@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Mail\Transport\Transport;
 use Illuminate\Support\Str;
+use Spatie\MailPreview\Events\MailStoredEvent;
 use Swift_Mime_SimpleMessage;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -34,10 +35,17 @@ class PreviewMailTransport extends Transport
             ->ensureEmailPreviewDirectoryExists()
             ->cleanOldPreviews();
 
-        session()->put('mail_preview_path', basename($previewPath = $this->getPreviewFilePath($message)));
+        $previewPath = $this->getPreviewFilePath($message);
 
-        $this->files->put("{$previewPath}.html", $this->getHtmlPreviewContent($message));
-        $this->files->put("{$previewPath}.eml", $this->getEmlPreviewContent($message));
+        session()->put('mail_preview_file_name', basename($previewPath));
+
+        $htmlFullPath = "{$previewPath}.html";
+        $emlFullPath = "{$previewPath}.html";
+
+        $this->files->put($htmlFullPath, $this->getHtmlPreviewContent($message));
+        $this->files->put($emlFullPath, $this->getEmlPreviewContent($message));
+
+        event(new MailStoredEvent($message, $htmlFullPath, $emlFullPath));
     }
 
     protected function getHtmlPreviewContent(Swift_Mime_SimpleMessage $message): string

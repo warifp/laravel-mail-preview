@@ -124,20 +124,19 @@ You can modify the file that will be published at `resources/views/vendor/mail-p
 
 ## Usage
 
-Everytime an email is sent, an `.html` and `.eml` file will be generated in `storage/email-previews` with a name that includes the first recipient and the subject:
+Everytime an email is sent, an `.html` and `.eml` file will be savind in the directory specified in the `storage_path` of the `mail-preview` config file.  The name includes the first recipient and the subject:
 
 ```
 1457904864_john_at_example_com_invoice_000234.html
 1457904864_john_at_example_com_invoice_000234.eml
 ```
 
-You can open the `.html` file in a web browser, or open the `.eml` file in your default email client to have a realistic look
-at the final output.
+You can open the `.html` file in a web browser.  The `.eml` file in your default email client to have a realistic look
+of the final output.
 
 ### Preview in a web browser
 
-When you open the `.html` file in a web browser you'll be able to see how your email will look, however there might be
-some differences that varies from one email client to another.
+When you open the `.html` file in a web browser you'll be able to see how your email will look.
 
 At the beginning of the generated file you'll find an HTML comment with all the message info:
 
@@ -151,6 +150,14 @@ bcc:null,
 subject:Invoice #000234
 -->
 ```
+
+### Events
+
+Whenever a mail is stored on disk, the `Spatie\MailPreview\Events\MailStoredEvent` will be fired. It has three public properties:
+
+- `message`: an instance of `Swift_Mime_SimpleMessage`
+- `pathToHtmlVersion`: the path to the html version of the sent mail
+- `pathToEmlVersion`: the path to the email version of the sent mail
 
 ## Changelog
 

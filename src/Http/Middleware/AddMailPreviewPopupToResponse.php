@@ -17,10 +17,10 @@ class AddMailPreviewPopupToResponse
 
         $this->attachPreviewLink(
             $response,
-            $request->session()->get('mail_preview_path')
+            $request->session()->get('mail_preview_file_name')
         );
 
-        $request->session()->forget('mail_preview_path');
+        $request->session()->forget('mail_preview_file_name');
 
         return $response;
     }
@@ -43,22 +43,22 @@ class AddMailPreviewPopupToResponse
             return false;
         }
 
-        if (! $request->session()->get('mail_preview_path')) {
+        if (! $request->session()->get('mail_preview_file_name')) {
             return false;
         }
 
         return true;
     }
 
-    protected function attachPreviewLink($response, $previewPath)
+    protected function attachPreviewLink($response, $storedMailFileName)
     {
         $content = $response->getContent();
 
-        $previewUrl = route('mail.preview', ['storage_path' => $previewPath]);
+        $previewUrl = route('mail.preview', ['mail_preview_file_name' => $storedMailFileName]);
 
         $timeoutInSeconds = config('mail-preview.popup_timeout_in_seconds');
 
-        $linkContent = view('mail-preview::previewLinkPopup', )
+        $linkContent = view('mail-preview::previewLinkPopup')
             ->with(compact('previewUrl', 'timeoutInSeconds'))
             ->render();
 
