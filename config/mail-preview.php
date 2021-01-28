@@ -2,6 +2,12 @@
 
 return [
     /*
+     * By default, the overlay will only be shown and mail will only be stored
+     * when the application is in debug mode.
+     */
+    'enabled' => env('APP_DEBUG', false),
+
+    /*
      * All mails will be stored in the given directory.
      */
     'storage_path' => storage_path('email-previews'),

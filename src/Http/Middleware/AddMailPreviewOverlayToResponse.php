@@ -30,6 +30,10 @@ class AddMailPreviewOverlayToResponse
         if (app()->runningInConsole()) {
             return false;
         }
+        
+        if (! config('mail-preview.enabled')) {
+            return false;
+        }
 
         if (! config('mail-preview.show_link_to_preview')) {
             return false;

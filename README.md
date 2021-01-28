@@ -88,6 +88,12 @@ This is the content of the config file that will be published at `config/mail-pr
 ```php
 return [
     /*
+     * By default, the overlay will only be shown and mail will only be stored
+     * when the application is in debug mode.
+     */
+    'enabled' => env('APP_DEBUG', false),
+
+    /*
      * All mails will be stored in the given directory.
      */
     'storage_path' => storage_path('email-previews'),
@@ -110,6 +116,7 @@ return [
      */
     'popup_timeout_in_seconds' => 8,
 ];
+
 ```
 
 ### Publishing the views

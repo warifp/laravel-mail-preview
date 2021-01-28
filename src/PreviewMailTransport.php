@@ -27,8 +27,12 @@ class PreviewMailTransport extends Transport
         $this->maximumLifeTimeInSeconds = $maximumLifeTimeInSeconds;
     }
 
-    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
+    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null): void
     {
+        if (! config('mail-preview.enabled')) {
+            return;
+        }
+
         $this->beforeSendPerformed($message);
 
         $this
