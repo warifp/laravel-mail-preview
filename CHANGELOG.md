@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `:package_name` will be documented in this file.
+All notable changes to `laravel-mail-preview` will be documented in this file.
 
 ## 4.0.1 - 2021-01-27
 
