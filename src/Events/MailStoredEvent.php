@@ -10,5 +10,6 @@ class MailStoredEvent
         public Swift_Mime_SimpleMessage $message,
         public string $pathToHtmlVersion,
         public string $pathToEmlVersion,
-    ) {}
+    ) {
+    }
 }
