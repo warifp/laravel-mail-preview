@@ -8,7 +8,6 @@ class ShowMailController
 {
     public function __invoke(Request $request)
     {
-
         $storedMailFileName = $request->get('mail_preview_file_name');
 
         $storedMailPath = $storedMailFileName
