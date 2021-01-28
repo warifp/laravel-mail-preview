@@ -4,7 +4,9 @@ namespace Spatie\MailPreview\Tests;
 
 use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Spatie\LaravelRay\RayServiceProvider;
 use Spatie\MailPreview\MailPreviewServiceProvider;
+use Symfony\Component\Finder\SplFileInfo;
 
 abstract class TestCase extends Orchestra
 {
@@ -20,17 +22,21 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
+            RayServiceProvider::class,
             MailPreviewServiceProvider::class,
         ];
     }
 
-    protected function assertLatestStoredMailContains(string $substring): void
+    protected function assertLatestMailContains(string $substring): void
     {
-        $this->assertDirectoryExists(config('mailpreview.path'));
+        $this->assertDirectoryExists(config('mail-preview.storage_path'));
 
-        $latestMailPath = collect(File::allFiles(config('mailpreview.path')))
-            ->sortByDesc->getMTime()
-            ->first()->getPathName();
+        $storedMails = File::allFiles(config('mail-preview.storage_path'));
+
+        $latestMailPath = collect($storedMails)
+            ->sortByDesc(fn (SplFileInfo $file) => $file->getMTime())
+            ->first()
+            ->getPathName();
 
         $latestMailContent = file_get_contents($latestMailPath);
 
@@ -41,6 +47,6 @@ abstract class TestCase extends Orchestra
 
     protected function clearSentMails(): void
     {
-        File::cleanDirectory(config('mailpreview.path'));
+        File::cleanDirectory(config('mail-preview.path'));
     }
 }
