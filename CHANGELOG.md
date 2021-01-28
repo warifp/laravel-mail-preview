@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mail-preview` will be documented in this file.
 
+## 5.0.3 - 2021-01-28
+
+- fix displaying mails
+
 ## 5.0.2 - 2021-01-28
 
 - add `enabled` option

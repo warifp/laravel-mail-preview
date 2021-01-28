@@ -44,7 +44,7 @@ class PreviewMailTransport extends Transport
         session()->put('mail_preview_file_name', basename($previewPath));
 
         $htmlFullPath = "{$previewPath}.html";
-        $emlFullPath = "{$previewPath}.html";
+        $emlFullPath = "{$previewPath}.eml";
 
         $this->filesystem->put($htmlFullPath, $this->getHtmlPreviewContent($message));
         $this->filesystem->put($emlFullPath, $this->getEmlPreviewContent($message));

@@ -1,1 +1,1 @@
-{{ $mailContent }}
+{!! $mailContent !!}

@@ -12,7 +12,7 @@ class AddMailPreviewOverlayToResponse
         $response = $next($request);
 
         if (! $this->shouldAttachPreviewLinkToResponse($request, $response)) {
-            return $request;
+            return $response;
         }
 
         $this->attachPreviewLink(
@@ -30,7 +30,7 @@ class AddMailPreviewOverlayToResponse
         if (app()->runningInConsole()) {
             return false;
         }
-        
+
         if (! config('mail-preview.enabled')) {
             return false;
         }
