@@ -31,7 +31,7 @@ composer require spatie/laravel-mail-preview
 
 This package contains a mail transport called `preview`. We recommend to only use this transport in non-production environments. To use the `preview` transport, change the `mailers.smtp.transport` to `preview` in your `config/mail.php` file:
 
-```
+```php
 // in config/mail.php
 
 'mailers' => [
