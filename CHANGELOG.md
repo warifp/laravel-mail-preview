@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-mail-preview` will be documented in this file.
 
+## 5.1.0 - 2021-02-07
+
+- add assertion methods
+- add open eml version to overlay
+
 ## 5.0.4 - 2021-01-28
 
 - allow to dynamically switch storage path
