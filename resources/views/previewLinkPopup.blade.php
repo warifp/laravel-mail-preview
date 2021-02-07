@@ -6,10 +6,14 @@
     border:solid 1px #ccc;
     padding: 15px;
 ">
-    An email was just sent! Open sent mail
+    An email was just sent!
     <ul>
-        <li> <a href="{{ $previewUrl }}&file_type=html">in browser</a> </li>
-        <li> <a href="{{ $previewUrl }}&file_type=eml">in email client</a></li>
+        <li>
+            <a style="text-decoration: underline" href="{{ $previewUrl }}&file_type=html">Preview sent mail in browser</a>
+        </li>
+        <li>
+            <a style="text-decoration: underline" href="{{ $previewUrl }}&file_type=eml">Open mail in email client</a>
+        </li>
     </ul>
 </div>
 <script type="text/javascript">
