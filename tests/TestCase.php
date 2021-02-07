@@ -4,7 +4,6 @@ namespace Spatie\MailPreview\Tests;
 
 use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Spatie\LaravelRay\RayServiceProvider;
 use Spatie\MailPreview\MailPreviewServiceProvider;
 use Symfony\Component\Finder\SplFileInfo;
 
