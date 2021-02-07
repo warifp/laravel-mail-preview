@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mail-preview` will be documented in this file.
 
+## 5.1.1 - 2012-02-07
+
+- style update
+
 ## 5.1.0 - 2021-02-07
 
 - add assertion methods
