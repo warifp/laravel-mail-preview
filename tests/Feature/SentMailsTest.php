@@ -90,7 +90,7 @@ class SentMailsTest extends TestCase
     /** @test */
     public function it_can_get_the_times_a_mail_was_sent()
     {
-        $actualCount = SentMails::timesSent(function(SentMail $mail) {
+        $actualCount = SentMails::timesSent(function (SentMail $mail) {
             return $mail->hasTo('john@example.com');
         });
 
@@ -100,11 +100,11 @@ class SentMailsTest extends TestCase
     /** @test */
     public function it_can_assert_the_times_a_mail_was_sent()
     {
-        SentMails::assertSent(function(SentMail $mail) {
+        SentMails::assertSent(function (SentMail $mail) {
             return $mail->hasTo('john@example.com');
         });
 
-        SentMails::assertTimesSent(1, function(SentMail $mail) {
+        SentMails::assertTimesSent(1, function (SentMail $mail) {
             return $mail->hasTo('john@example.com');
         });
     }
