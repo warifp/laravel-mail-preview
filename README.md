@@ -168,9 +168,21 @@ Whenever a mail is stored on disk, the `Spatie\MailPreview\Events\MailStoredEven
 
 ### Making assertions on sent mails
 
-Currently, using Laravel's Mail fake you cannot make asserts against the content of a mail, as the using the fake will not render the mail. The `SentMails` facade of this package does allow you to make asserts against the content.
+Currently, using Laravel's `Mail::fake` you cannot make any assertions against the content of a mail, as the using the fake will not render the mail. 
 
-Let's assume you have this mailable.
+The `SentMails` facade provided this package does allow you to make asserts against the content.
+
+This allows you to, in your test, make assertions on the content of a mail, without having the mailable available)
+
+```php
+// in a test
+
+Artisan::call(CommandThatSendsMail::class)`
+
+Spatie\MailPreview\Facades\SentMails::assertLastContains('something in your mail');
+```
+
+Let's explain other available assertions method using this mailable as example.
 
 ```php
 namespace App\Mail;
