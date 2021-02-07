@@ -7,7 +7,7 @@
 
 This package can display a small overlay whenever a mail is sent. The overlay contains a link to the mail that was just sent.
 
-<img alt="screenshot" src="http://spatie.github.io/laravel-mail-preview/images/overlay.png" width="400" />
+<img alt="screenshot" src="https://github.com/spatie/laravel-mail-preview/blob/master/docs/images/overlay.png?raw=true" width="400" />
 
 This can be handy when testing out emails in a local environment. 
 
