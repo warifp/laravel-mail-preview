@@ -63,9 +63,9 @@ class SentMails
     public function timesSent(Closure $findMail): int
     {
         $timesSent = 0;
-;
-        foreach($this->mails as $mail) {
-            if($findMail($mail)) {
+        ;
+        foreach ($this->mails as $mail) {
+            if ($findMail($mail)) {
                 $timesSent++;
             }
         }
@@ -96,4 +96,3 @@ class SentMails
         Assert::assertEquals(0, $actualCount, "A mail was unexpectedly sent `$actualCount` times.");
     }
 }
-

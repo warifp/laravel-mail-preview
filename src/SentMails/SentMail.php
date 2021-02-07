@@ -12,7 +12,8 @@ class SentMail
         public Swift_Mime_SimpleMessage $message,
         public string $htmlPath,
         public string $emlPath,
-    ) {}
+    ) {
+    }
 
     public function body(): string
     {
@@ -130,6 +131,4 @@ class SentMail
 
         return $this;
     }
-
-
 }

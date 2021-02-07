@@ -10,12 +10,12 @@ class ShowMailController
     public function __invoke(Request $request)
     {
         $request->validate([
-            'file_type' => Rule::in(['html', 'eml'])
+            'file_type' => Rule::in(['html', 'eml']),
         ]);
 
         $storedMailFileName = $request->get('mail_preview_file_name');
-ray($storedMailFileName)->green();
-ray($request->file_type);
+        ray($storedMailFileName)->green();
+        ray($request->file_type);
         $storedMailPath = $storedMailFileName
             ? config('mail-preview.storage_path').'/'.$storedMailFileName.'.' . $request->file_type
             : last(glob(config('mail-preview.storage_path').'/*.' . $request->file_type));
@@ -25,7 +25,7 @@ ray($request->file_type);
             : [];
 
         return response()->view('mail-preview::showMail', [
-            'mailContent' => file_get_contents($storedMailPath)
+            'mailContent' => file_get_contents($storedMailPath),
             ])->withHeaders($headers);
     }
 }

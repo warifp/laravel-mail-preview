@@ -18,6 +18,5 @@ class MailPreviewTest extends TestCase
 
         $this->assertFileExists($sentMail->htmlPath);
         $this->assertFileExists($sentMail->emlPath);
-
     }
 }
