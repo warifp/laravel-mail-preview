@@ -172,7 +172,7 @@ Currently, using Laravel's `Mail::fake` you cannot make any assertions against t
 
 The `SentMails` facade provided this package does allow you to make asserts against the content.
 
-This allows you to, in your test, make assertions on the content of a mail, without having the mailable available)
+This allows you to make assertions on the content of a mail, without having the mailable in scope.
 
 ```php
 // in a test
