@@ -166,7 +166,7 @@ Whenever a mail is stored on disk, the `Spatie\MailPreview\Events\MailStoredEven
 - `pathToHtmlVersion`: the path to the html version of the sent mail
 - `pathToEmlVersion`: the path to the email version of the sent mail
 
-### Making assertions on sent mails
+### Making assertions against sent mails
 
 Currently, using Laravel's `Mail::fake` you cannot make any assertions against the content of a mail, as the using the fake will not render the mail. 
 
