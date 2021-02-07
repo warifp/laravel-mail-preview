@@ -27,7 +27,6 @@ abstract class TestCase extends Orchestra
     {
         return [
             MailPreviewServiceProvider::class,
-            RayServiceProvider::class,
         ];
     }
 
