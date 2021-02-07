@@ -7,6 +7,7 @@ use Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Spatie\MailPreview\Http\Controllers\ShowMailController;
+use Spatie\MailPreview\SentMails\SentMails;
 
 class MailPreviewServiceProvider extends PackageServiceProvider
 {
@@ -22,6 +23,7 @@ class MailPreviewServiceProvider extends PackageServiceProvider
     {
         $this
             ->registerPreviewMailTransport()
+            ->registerSentMails()
             ->registerRouteMacro();
     }
 
@@ -33,6 +35,17 @@ class MailPreviewServiceProvider extends PackageServiceProvider
         );
 
         app('mail.manager')->extend('preview', fn () => $previewTransport);
+
+        return $this;
+    }
+
+    protected function registerSentMails(): self
+    {
+        $this->app->singleton(SentMails::class, function () {
+            return new SentMails();
+        });
+
+        $this->app->alias(SentMails::class, 'sentMails');
 
         return $this;
     }

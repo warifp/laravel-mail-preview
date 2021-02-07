@@ -7,6 +7,8 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Mail\Transport\Transport;
 use Illuminate\Support\Str;
 use Spatie\MailPreview\Events\MailStoredEvent;
+use Spatie\MailPreview\SentMails\SentMail;
+use Spatie\MailPreview\SentMails\SentMails;
 use Swift_Mime_SimpleMessage;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -15,6 +17,8 @@ class PreviewMailTransport extends Transport
     protected Filesystem $filesystem;
 
     protected int $maximumLifeTimeInSeconds;
+
+    public array $sentMails = [];
 
     public function __construct(Filesystem $files, int $maximumLifeTimeInSeconds = 60)
     {
@@ -25,6 +29,8 @@ class PreviewMailTransport extends Transport
 
     public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null): void
     {
+        $this->sentMails[] = $message;
+
         if (! config('mail-preview.enabled')) {
             return;
         }
@@ -44,6 +50,10 @@ class PreviewMailTransport extends Transport
 
         $this->filesystem->put($htmlFullPath, $this->getHtmlPreviewContent($message));
         $this->filesystem->put($emlFullPath, $this->getEmlPreviewContent($message));
+
+        $sentMail = new SentMail($message, $htmlFullPath, $emlFullPath);
+
+        app(SentMails::class)->add($sentMail);
 
         event(new MailStoredEvent($message, $htmlFullPath, $emlFullPath));
     }

@@ -12,7 +12,11 @@ abstract class TestCase extends Orchestra
 {
     public function setUp(): void
     {
+        ray()->newScreen("Test {$this->getName()}");
+
         parent::setUp();
+
+        config()->set('mail-preview.enabled', true);
 
         config()->set('mail.mailers.smtp.transport', 'preview');
 
@@ -22,8 +26,8 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            RayServiceProvider::class,
             MailPreviewServiceProvider::class,
+            RayServiceProvider::class,
         ];
     }
 

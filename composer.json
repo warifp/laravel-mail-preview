@@ -6,12 +6,12 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Mohamed Said",
-            "email": "themsaid@gmail.com"
-        },
-        {
             "name": "Freek Van der Herten",
             "email": "freek@spatie.be"
+        },
+        {
+            "name": "Mohamed Said",
+            "email": "themsaid@gmail.com"
         }
     ],
     "require": {
@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "orchestra/testbench": "^5.0|^6.0",
-        "spatie/laravel-ray": "^1.9"
+        "spatie/ray": "^1.19"
     },
     "autoload": {
         "psr-4": {
@@ -39,7 +39,10 @@
         "laravel": {
             "providers": [
                 "Spatie\\MailPreview\\MailPreviewServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "sentMails": "Spatie\\MailPreview\\Facades\\SentMails"
+            }
         }
     },
     "scripts": {

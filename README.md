@@ -166,6 +166,95 @@ Whenever a mail is stored on disk, the `Spatie\MailPreview\Events\MailStoredEven
 - `pathToHtmlVersion`: the path to the html version of the sent mail
 - `pathToEmlVersion`: the path to the email version of the sent mail
 
+### Making assertions on sent mails
+
+Currently, using Laravel's Mail fake you cannot make asserts against the content of a mail, as the using the fake will not render the mail. The `SentMails` facade of this package does allow you to make asserts against the content.
+
+Let's assume you have this mailable.
+
+```php
+namespace App\Mail;
+
+use Illuminate\Mail\Mailable;
+
+class MyNewSongMailable extends Mailable
+{
+    public function build()
+    {
+        $this
+            ->to('ringo@example.com')
+            ->cc('paul@examle.com')
+            ->bcc('john@examle.com')
+            ->subject('Here comes the sun')
+            ->html("It's been a long cold lonely winter");
+    }
+}
+```
+
+In your code you can send that mailable with:
+
+```php
+Mail::send(new MyNewSongMailable());
+```
+
+In your tests you can assert that the mail was sent using the `assertSent` function. You should pass a callable to `assertSent` which will get an instance of `SentMail` to it. Each sent mail will be passed to the callable. If the callable returns `true` the assertions passes.
+
+```php
+use Spatie\MailPreview\Facades\SentMails;
+use \Spatie\MailPreview\SentMails\SentMail;
+
+SentMails::assertSent(fn (SentMail $mail) => $mail->bodyContains('winter')) // will pass
+SentMails::assertSent(fn (SentMail $mail) => $mail->bodyContains('spring')) // will not pass
+```
+
+You can use as many assertion methods on the `SentMail` as you like.
+
+```php
+SentMails::assertSent(function (SentMail $mail)  {
+    return
+        $mail->subjectContains('sun') &&
+        $mail->hasTo('ringo@example.com')
+        $mail->bodyContains('winter');
+```
+
+The `Spatie\MailPreview\Facades\SentMails` has the following assertions methods:
+
+- `assertCount(int $expectedCount)`: assert how many mails were sent
+- `assertLastContains(string $expectedSubstring)`: assert that the body of the last sent mail contains a given substring
+- `assertSent($findMailCallable, int $expectedCount = 1)`: explained above
+- `assertTimesSent(int $expectedCount, Closure $findMail)`
+- `assertNotSent(Closure $findMail)`
+
+Additionally, the `Spatie\MailPreview\Facades\SentMails` has these methods:
+
+- `all`: returns an array of sent mails. Each item will be an instance of  `sentMail`
+- `count()`: returns the amount of mails sent
+- `last`: returns an instance of `SentMail` for the last sent mail. If no mail was sent `null` will be returned.
+- `lastContains`: returns `true` if the body of the last sent mail contains the given substring
+- `timesSent($findMailCallable)`: returns the amount of mails the were sent and that passed the given callable
+
+The `sentMail` class provides these assertions:
+
+- `assertSubjectContains($expectedSubstring)`
+- `assertFrom($expectedAddress`)`
+- `assertTo$expectedAddress`)`
+- `assertCc($expectedAddress`)`
+- `assertBcc($expectedAddress`)`
+- `assertContains($substring)`: will pass if the body of the mail contains the substring
+
+Additionally, `sentMail` contains these methods:
+
+- `subject()`: return the body of a mail
+- `to()`: returns all to recipients as an array
+- `cc()`: returns all cc recipients as an array
+- `bcc()`: returns all bcc recipients as an array
+- `body()`: returns the body of a mail
+- `subjectContains)`: returns a boolean
+- `hasFrom($expectedAddress)`: return a boolean
+- `hasTo($expectedAddress)`: return a boolean
+- `hasCc($expectedAddress)`: return a boolean
+- `hasBcc($expectedAddress)`: return a boolean
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
