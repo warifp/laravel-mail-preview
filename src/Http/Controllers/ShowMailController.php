@@ -14,8 +14,7 @@ class ShowMailController
         ]);
 
         $storedMailFileName = $request->get('mail_preview_file_name');
-        ray($storedMailFileName)->green();
-        ray($request->file_type);
+
         $storedMailPath = $storedMailFileName
             ? config('mail-preview.storage_path').'/'.$storedMailFileName.'.' . $request->file_type
             : last(glob(config('mail-preview.storage_path').'/*.' . $request->file_type));
