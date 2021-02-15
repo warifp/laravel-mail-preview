@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mail-preview` will be documented in this file.
 
+## 5.1.3 - 2021-02-15
+
+- remove stray ray calls
+
 ## 5.1.2 - 2021-02-15
 
 - fix missing return in bodyContains and two minor fixes (#64)
