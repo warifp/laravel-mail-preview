@@ -108,4 +108,12 @@ class SentMailsTest extends TestCase
             return $mail->hasTo('john@example.com');
         });
     }
+
+    /** @test */
+    public function it_can_assert_the_body_content_for_a_sent_mail()
+    {
+        SentMails::assertSent(function (SentMail $mail) {
+            return $mail->bodyContains('this is the html');
+        });
+    }
 }

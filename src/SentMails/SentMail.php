@@ -22,7 +22,7 @@ class SentMail
 
     public function bodyContains(string $expectedSubstring): bool
     {
-        Str::contains($this->body(), $expectedSubstring);
+        return Str::contains($this->body(), $expectedSubstring);
     }
 
     public function subject(): ?string

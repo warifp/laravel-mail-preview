@@ -277,7 +277,7 @@ Please see [UPGRADING](UPGRADING.md) for what to do to switch over from `themsai
 
 ## Contributing
 
-Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
 
