@@ -3,6 +3,7 @@
 namespace Spatie\MailPreview;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Mail\MailManager;
 use Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -19,22 +20,28 @@ class MailPreviewServiceProvider extends PackageServiceProvider
             ->hasViews();
     }
 
+    public function packageRegistered()
+    {
+        $this->registerPreviewMailTransport();
+    }
+
     public function packageBooted()
     {
         $this
-            ->registerPreviewMailTransport()
             ->registerSentMails()
             ->registerRouteMacro();
     }
 
     protected function registerPreviewMailTransport(): self
     {
-        $previewTransport = new PreviewMailTransport(
-            app(Filesystem::class),
-            config('mail-preview.maximum_lifetime_in_seconds')
-        );
+        $this->app->afterResolving('mail.manager', function (MailManager $mailManager) {
+            $previewTransport = new PreviewMailTransport(
+                app(Filesystem::class),
+                config('mail-preview.maximum_lifetime_in_seconds')
+            );
 
-        app('mail.manager')->extend('preview', fn () => $previewTransport);
+            $mailManager->extend('preview', fn () => $previewTransport);
+        });
 
         return $this;
     }
