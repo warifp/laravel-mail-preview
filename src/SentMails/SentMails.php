@@ -18,6 +18,13 @@ class SentMails
         return $this;
     }
 
+    public function reset(): self
+    {
+        $this->mails = [];
+
+        return $this;
+    }
+
     public function count(): int
     {
         return count($this->mails);
@@ -77,6 +84,13 @@ class SentMails
         $actualCount = $this->timesSent($findMail);
 
         Assert::assertEquals($expectedCount, $actualCount, "Mail was expected to be sent `$expectedCount` times, but was sent ``");
+
+        return $this;
+    }
+
+    public function assertNothingSent(): self
+    {
+        Assert::assertCount(0, $this->all(), "Unexpected mails were sent");
 
         return $this;
     }

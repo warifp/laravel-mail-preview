@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mail-preview` will be documented in this file.
 
+## 5.2.0 - 2021-04-01
+
+- add `assertNothingSent`
+
 ## 5.1.4 - 2021-03-12
 
 - MailManager extension in afterResolving() for better service ordering (#73)

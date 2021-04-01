@@ -28,6 +28,12 @@ class SentMailsTest extends TestCase
     }
 
     /** @test */
+    public function it_can_assert_that_nothing_was_sent()
+    {
+        SentMails::reset()->assertNothingSent();
+    }
+
+    /** @test */
     public function it_can_make_an_assertion_on_the_latest_mail()
     {
         $this->assertTrue(SentMails::lastContains('the html'));
