@@ -80,7 +80,7 @@ Route::mailPreview('custom-url-where-sent-mails-will-be-shown');
 Optionally, you can publish the config file with:
 
 ```bash
-php artisan vendor:publish --provider="Spatie\MailPreview\MailPreviewServiceProvider" --tag="laravel-mail-preview-config"
+php artisan vendor:publish --provider="Spatie\MailPreview\MailPreviewServiceProvider" --tag="mail-preview-config"
 ```
 
 This is the content of the config file that will be published at `config/mail-preview.php`:
@@ -124,7 +124,7 @@ return [
 Optionally, you can publish the views that render the preview overlay and the mail itself.
 
 ```bash
-php artisan vendor:publish --provider="Spatie\MailPreview\MailPreviewServiceProvider" --tag="laravel-mail-preview-views"
+php artisan vendor:publish --provider="Spatie\MailPreview\MailPreviewServiceProvider" --tag="mail-preview-views"
 ```
 
 You can modify the views that will be published at `resources/views/vendor/mail-preview` to your liking.
