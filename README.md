@@ -177,7 +177,7 @@ This allows you to make assertions on the content of a mail, without having the 
 ```php
 // in a test
 
-Artisan::call(CommandThatSendsMail::class)`
+Artisan::call(CommandThatSendsMail::class);
 
 Spatie\MailPreview\Facades\SentMails::assertLastContains('something in your mail');
 ```
@@ -215,8 +215,8 @@ In your tests you can assert that the mail was sent using the `assertSent` funct
 use Spatie\MailPreview\Facades\SentMails;
 use \Spatie\MailPreview\SentMails\SentMail;
 
-SentMails::assertSent(fn (SentMail $mail) => $mail->bodyContains('winter')) // will pass
-SentMails::assertSent(fn (SentMail $mail) => $mail->bodyContains('spring')) // will not pass
+SentMails::assertSent(fn (SentMail $mail) => $mail->bodyContains('winter')); // will pass
+SentMails::assertSent(fn (SentMail $mail) => $mail->bodyContains('spring')); // will not pass
 ```
 
 You can use as many assertion methods on the `SentMail` as you like.
@@ -248,10 +248,10 @@ Additionally, the `Spatie\MailPreview\Facades\SentMails` has these methods:
 The `sentMail` class provides these assertions:
 
 - `assertSubjectContains($expectedSubstring)`
-- `assertFrom($expectedAddress`)`
-- `assertTo$expectedAddress`)`
-- `assertCc($expectedAddress`)`
-- `assertBcc($expectedAddress`)`
+- `assertFrom($expectedAddress)`
+- `assertTo$expectedAddress)`
+- `assertCc($expectedAddress)`
+- `assertBcc($expectedAddress)`
 - `assertContains($substring)`: will pass if the body of the mail contains the substring
 
 Additionally, `sentMail` contains these methods:
