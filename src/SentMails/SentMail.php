@@ -40,7 +40,7 @@ class SentMail
 
     public function from(): array
     {
-        return array_map(function(Address $address) {
+        return array_map(function (Address $address) {
             return $address->getAddress();
         }, $this->message->getOriginalMessage()->getFrom());
     }
@@ -63,7 +63,7 @@ class SentMail
 
     public function to(): array
     {
-        return array_map(function(Address $address) {
+        return array_map(function (Address $address) {
             return $address->getAddress();
         }, $this->message->getOriginalMessage()->getTo());
     }
@@ -86,7 +86,7 @@ class SentMail
 
     public function cc(): array
     {
-        return array_map(function(Address $address) {
+        return array_map(function (Address $address) {
             return $address->getAddress();
         }, $this->message->getOriginalMessage()->getCc());
     }
@@ -109,7 +109,7 @@ class SentMail
 
     public function bcc(): array
     {
-        return array_map(function(Address $address) {
+        return array_map(function (Address $address) {
             return $address->getAddress();
         }, $this->message->getOriginalMessage()->getBcc());
     }
