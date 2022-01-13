@@ -19,7 +19,8 @@
         "illuminate/filesystem": "^9.0",
         "illuminate/mail": "^9.0",
         "illuminate/support": "^9.0",
-        "spatie/laravel-package-tools": "^1.2"
+        "spatie/laravel-package-tools": "^1.11",
+        "symfony/mime": "^6.0"
     },
     "require-dev": {
         "orchestra/testbench": "^7.0",
