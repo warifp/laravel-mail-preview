@@ -4,7 +4,6 @@ namespace Spatie\MailPreview;
 
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Mail\Transport\Transport;
 use Illuminate\Support\Str;
 use Spatie\MailPreview\Events\MailStoredEvent;
 use Spatie\MailPreview\SentMails\SentMail;
