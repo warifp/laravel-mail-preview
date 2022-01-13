@@ -9,10 +9,11 @@ use Illuminate\Support\Str;
 use Spatie\MailPreview\Events\MailStoredEvent;
 use Spatie\MailPreview\SentMails\SentMail;
 use Spatie\MailPreview\SentMails\SentMails;
-use Swift_Mime_SimpleMessage;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Mailer\SentMessage;
+use Symfony\Component\Mailer\Transport\AbstractTransport;
 
-class PreviewMailTransport extends Transport
+class PreviewMailTransport extends AbstractTransport
 {
     protected Filesystem $filesystem;
 
@@ -27,15 +28,13 @@ class PreviewMailTransport extends Transport
         $this->maximumLifeTimeInSeconds = $maximumLifeTimeInSeconds;
     }
 
-    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null): void
+    public function doSend(SentMessage $message, &$failedRecipients = null): void
     {
         $this->sentMails[] = $message;
 
         if (! config('mail-preview.enabled')) {
             return;
         }
-
-        $this->beforeSendPerformed($message);
 
         $this
             ->ensureEmailPreviewDirectoryExists()
@@ -58,41 +57,43 @@ class PreviewMailTransport extends Transport
         event(new MailStoredEvent($message, $htmlFullPath, $emlFullPath));
     }
 
-    protected function getHtmlPreviewContent(Swift_Mime_SimpleMessage $message): string
+    protected function getHtmlPreviewContent(SentMessage $message): string
     {
         $messageInfo = $this->getMessageInfo($message);
 
-        return $messageInfo . $message->getBody();
+        return $messageInfo . $message->getOriginalMessage()->getBody()->bodyToString();
     }
 
-    protected function getEmlPreviewContent(Swift_Mime_SimpleMessage $message): string
+    protected function getEmlPreviewContent(SentMessage $message): string
     {
         return $message->toString();
     }
 
-    protected function getPreviewFilePath(Swift_Mime_SimpleMessage $message): string
+    protected function getPreviewFilePath(SentMessage $message): string
     {
-        $recipients = array_keys($message->getTo());
+        $to = '';
 
-        $to = ! empty($recipients)
-            ? str_replace(['@', '.'], ['_at_', '_'], $recipients[0]) . '_'
-            : '';
+        /** @var \Symfony\Component\Mime\Address $toAddress */
+        if ($toAddress = $message->getOriginalMessage()->getTo()[0]) {
+            $to = str_replace(['@', '.'], ['_at_', '_'], $toAddress->getAddress()) . '_';
+        }
 
-        $subject = $message->getSubject();
+        $subject = $message->getOriginalMessage()->getSubject();
+        $date = $message->getOriginalMessage()->getDate() ?? now();
 
-        return $this->storagePath() . '/' . Str::slug($message->getDate()->format('u') . '_' . $to . $subject, '_');
+        return $this->storagePath() . '/' . Str::slug($date->format('u') . '_' . $to . $subject, '_');
     }
 
-    protected function getMessageInfo(Swift_Mime_SimpleMessage $message): string
+    protected function getMessageInfo(SentMessage $message): string
     {
         return sprintf(
             "<!--\nFrom:%s, \nto:%s, \nreply-to:%s, \ncc:%s, \nbcc:%s, \nsubject:%s\n-->\n",
-            json_encode($message->getFrom()),
-            json_encode($message->getTo()),
-            json_encode($message->getReplyTo()),
-            json_encode($message->getCc()),
-            json_encode($message->getBcc()),
-            $message->getSubject(),
+            json_encode($message->getOriginalMessage()->getFrom()),
+            json_encode($message->getOriginalMessage()->getTo()),
+            json_encode($message->getOriginalMessage()->getReplyTo()),
+            json_encode($message->getOriginalMessage()->getCc()),
+            json_encode($message->getOriginalMessage()->getBcc()),
+            $message->getOriginalMessage()->getSubject(),
         );
     }
 
@@ -125,5 +126,10 @@ class PreviewMailTransport extends Transport
     protected function storagePath(): string
     {
         return config('mail-preview.storage_path');
+    }
+
+    public function __toString(): string
+    {
+        return '';
     }
 }

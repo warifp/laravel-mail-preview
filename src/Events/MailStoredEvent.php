@@ -2,12 +2,12 @@
 
 namespace Spatie\MailPreview\Events;
 
-use Swift_Mime_SimpleMessage;
+use Symfony\Component\Mailer\SentMessage;
 
 class MailStoredEvent
 {
     public function __construct(
-        public Swift_Mime_SimpleMessage $message,
+        public SentMessage $message,
         public string $pathToHtmlVersion,
         public string $pathToEmlVersion,
     ) {

@@ -2,14 +2,15 @@
 
 namespace Spatie\MailPreview\SentMails;
 
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Assert;
-use Str;
-use Swift_Mime_SimpleMessage;
+use Symfony\Component\Mailer\SentMessage;
+use Symfony\Component\Mime\Address;
 
 class SentMail
 {
     public function __construct(
-        public Swift_Mime_SimpleMessage $message,
+        public SentMessage $message,
         public string $htmlPath,
         public string $emlPath,
     ) {
@@ -17,7 +18,7 @@ class SentMail
 
     public function body(): string
     {
-        return $this->message->getBody();
+        return $this->message->getOriginalMessage()->getBody()->bodyToString();
     }
 
     public function bodyContains(string $expectedSubstring): bool
@@ -27,7 +28,7 @@ class SentMail
 
     public function subject(): ?string
     {
-        return $this->message->getSubject();
+        return $this->message->getOriginalMessage()->getSubject();
     }
 
     public function assertSubjectContains(string $expectedSubstring)
@@ -39,7 +40,9 @@ class SentMail
 
     public function from(): array
     {
-        return array_keys($this->message->getFrom());
+        return array_map(function(Address $address) {
+            return $address->getAddress();
+        }, $this->message->getOriginalMessage()->getFrom());
     }
 
     public function hasFrom(string $expectedAddress): bool
@@ -60,7 +63,9 @@ class SentMail
 
     public function to(): array
     {
-        return array_keys($this->message->getTo());
+        return array_map(function(Address $address) {
+            return $address->getAddress();
+        }, $this->message->getOriginalMessage()->getTo());
     }
 
     public function hasTo(string $expectedAddress): bool
@@ -81,7 +86,9 @@ class SentMail
 
     public function cc(): array
     {
-        return array_keys($this->message->getCc());
+        return array_map(function(Address $address) {
+            return $address->getAddress();
+        }, $this->message->getOriginalMessage()->getCc());
     }
 
     public function hasCc(string $expectedAddress): bool
@@ -102,7 +109,9 @@ class SentMail
 
     public function bcc(): array
     {
-        return array_keys($this->message->getBcc());
+        return array_map(function(Address $address) {
+            return $address->getAddress();
+        }, $this->message->getOriginalMessage()->getBcc());
     }
 
     public function hasBcc(string $expectedAddress): bool
@@ -125,7 +134,7 @@ class SentMail
     {
         Assert::assertStringContainsString(
             $substring,
-            $this->message->getBody(),
+            $this->body(),
             "Did not find `{$substring}` in the body of the sent mail",
         );
 
