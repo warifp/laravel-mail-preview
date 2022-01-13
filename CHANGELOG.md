@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-mail-preview` will be documented in this file.
 
+## 6.0.0 - 2022-01-13
+
+- add support for Laravel 9
+- drop support for Laravel 8
+
 ## 5.2.0 - 2021-04-01
 
 - add `assertNothingSent`
